@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Champions League</title>
+<style>
+  :root { --bg: #0b1026; --panel: #141b3d; --line: #263063; --text: #eef1ff; --muted: #8e97c7; --accent: #3d7bff; --gold: #f5c542; --win: #36c98a; --user: #213a7a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 14px -apple-system, "Helvetica Neue", sans-serif; }
+  header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 10px max(16px, env(safe-area-inset-left)); background: #070b1d; border-bottom: 1px solid var(--line); }
+  header h1 { margin: 0; font-size: 17px; flex: 1; }
+  header small { color: var(--muted); font-weight: normal; }
+  button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; }
+  button.on { background: var(--accent); border-color: var(--accent); }
+  #close { background: transparent; border: none; font-size: 22px; padding: 2px 10px; }
+  nav { display: flex; gap: 6px; padding: 8px max(16px, env(safe-area-inset-left)); overflow-x: auto; }
+  main { padding: 4px max(16px, env(safe-area-inset-left)) 32px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+  .card h3 { margin: 0 0 6px; font-size: 14px; color: var(--gold); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 4px 3px; text-align: center; white-space: nowrap; }
+  th { color: var(--muted); font-weight: normal; font-size: 12px; }
+  td.team, th.team { text-align: left; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+  tr.user td { background: var(--user); }
+  tr.q td:first-child { box-shadow: inset 3px 0 var(--win); }
+  details { margin-top: 6px; color: var(--muted); }
+  .m { display: flex; justify-content: space-between; gap: 6px; font-size: 12px; padding: 2px 0; }
+  .m span:first-child, .m span:last-child { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .m span:last-child { text-align: right; }
+  .bracket { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; }
+  .col { min-width: 210px; display: flex; flex-direction: column; justify-content: space-around; gap: 10px; }
+  .col h4 { margin: 0 0 4px; color: var(--gold); text-align: center; }
+  .tie { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; }
+  .tie.user { border-color: var(--accent); }
+  .row { display: flex; align-items: center; gap: 6px; }
+  .row .n { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .s { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .row.w .n { color: var(--win); font-weight: 600; }
+  .champ { text-align: center; padding: 14px; font-size: 18px; color: var(--gold); }
+  .empty { color: var(--muted); padding: 24px 0; text-align: center; }
+  ol.rank { margin: 0; padding: 0; list-style: none; }
+  ol.rank li { display: flex; gap: 10px; padding: 7px 4px; border-bottom: 1px solid var(--line); }
+  ol.rank .i { width: 22px; color: var(--muted); text-align: right; }
+  ol.rank .p { flex: 1; }
+  ol.rank .t { color: var(--muted); font-size: 12px; }
+  ol.rank .v { font-weight: 700; color: var(--gold); min-width: 24px; text-align: right; }
+  p.note { color: var(--muted); }
+</style>
+</head>
+<body>
+<header><h1>🏆 Champions League <small id="sub"></small></h1><button id="close" aria-label="Đóng">✕</button></header>
+<nav id="tabs"></nav>
+<main id="view"></main>
+<script>
+const D = /*DATA*/null;
+const send = (m) => { try { window.webkit.messageHandlers.ziru.postMessage(m); } catch (e) {} };
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const STAGE = { R16: "Vòng 16 đội", QF: "Tứ kết", SF: "Bán kết", FINAL: "Chung kết" };
+const ENDED = { CHAMPION: "Vô địch!", RUNNER_UP: "Á quân", OUT_GROUP: "Bị loại ở vòng bảng", OUT_R16: "Bị loại ở vòng 16 đội",
+                OUT_QF: "Bị loại ở tứ kết", OUT_SF: "Bị loại ở bán kết" };
+document.getElementById("close").onclick = () => send("close");
+document.getElementById("sub").textContent = D.user_name + (D.ended ? " · " + (ENDED[D.ended] || "") : "");
+
+function groups() {
+  if (!D.groups) return '<p class="empty">Chưa có mùa Champions League. Vào My League và chọn đội để bốc thăm.</p>';
+  return '<div class="grid">' + D.groups.map((g) => {
+    const rows = g.table.map((r, i) => `<tr class="${r.user ? "user" : ""} ${i < 2 ? "q" : ""}"><td>${i + 1}</td><td class="team">${esc(r.team)}</td>` +
+      `<td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf}:${r.ga}</td><td><b>${r.pts}</b></td></tr>`).join("");
+    const ms = g.matches.map((m) => `<div class="m"><span>${esc(m.home)}</span><b>${m.hs === undefined ? "–" : m.hs + " - " + m.as}</b><span>${esc(m.away)}</span></div>`);
+    const byMd = [1, 2, 3, 4, 5, 6].map((md) => `<div class="m"><span style="color:var(--gold)">Lượt ${md}</span></div>` + ms.slice((md - 1) * 2, md * 2).join("")).join("");
+    return `<div class="card"><h3>Bảng ${g.name}</h3><table><tr><th></th><th class="team">Đội</th><th>Tr</th><th>T</th><th>H</th><th>B</th><th>HS</th><th>Đ</th></tr>${rows}</table>` +
+      `<details><summary>Kết quả</summary>${byMd}</details></div>`;
+  }).join("") + "</div>";
+}
+
+function bracket() {
+  if (!D.rounds || !D.rounds.length) return '<p class="empty">Nhánh đấu có sau khi vòng bảng kết thúc (lượt 6).</p>';
+  const cols = D.rounds.map((r) => `<div class="col"><h4>${STAGE[r.stage] || r.stage}</h4>` + r.ties.map((t) => {
+    const leg = (l, k) => (l ? l[k] : "");
+    const agg = (k) => (t.leg1 || t.leg2) ? ((t.leg1 ? t.leg1[k] : 0) + (t.leg2 ? t.leg2[k] : 0)) : "";
+    const line = (name, k, side) => `<div class="row ${t.winner === side ? "w" : ""}"><span class="n">${esc(name)}</span>` +
+      (r.stage === "FINAL" ? `<span class="s">${leg(t.leg1, k)}</span>` : `<span class="s">${leg(t.leg1, k)}</span><span class="s">${leg(t.leg2, k)}</span><b>${agg(k)}</b>`) + "</div>";
+    return `<div class="tie ${t.user ? "user" : ""}">${line(t.a, 0, "a")}${line(t.b, 1, "b")}</div>`;
+  }).join("") + "</div>").join("");
+  const champ = D.champion ? `<div class="champ">🏆 ${esc(D.champion)}</div>` : "";
+  return `${champ}<div class="bracket">${cols}</div><p class="note">Cột số: lượt đi, lượt về, tổng. Hòa tổng tỉ số được phân định bằng luân lưu.</p>`;
+}
+
+function ranking(list, what) {
+  if (!list || !list.length) return `<p class="empty">Chưa có ${what}.</p>`;
+  return '<ol class="rank">' + list.map((p, i) => `<li><span class="i">${i + 1}</span><span class="p">${esc(p.name)}<br><span class="t">${esc(p.team)}</span></span><span class="v">${p.value}</span></li>`).join("") + "</ol>";
+}
+
+function mode() {
+  const b = (m, label) => `<button class="${D.mode === m ? "on" : ""}" onclick="pick('${m}')">${label}</button>`;
+  return `<div class="card"><h3>Chế độ My League</h3><p>${b("UCL", "Champions League")} ${b("LEAGUE", "Giải VĐQG")}</p>` +
+    `<p class="note">Đổi chế độ sẽ bắt đầu mùa giải mới: kết quả, bảng xếp hạng và thống kê của mùa hiện tại bị xoá.</p></div>`;
+}
+function pick(m) {
+  if (m === D.mode) return;
+  if (confirm("Đổi chế độ và bắt đầu mùa giải mới?")) send("mode:" + m);
+}
+
+const TABS = [["Bảng đấu", groups], ["Nhánh đấu", bracket], ["Vua phá lưới", () => ranking(D.goals, "bàn thắng")],
+              ["Kiến tạo", () => ranking(D.assists, "kiến tạo")], ["Chế độ", mode]];
+let cur = 0;
+try { cur = +localStorage.getItem("ucl_tab") || 0; } catch (e) {}
+function show(i) {
+  cur = i;
+  try { localStorage.setItem("ucl_tab", i); } catch (e) {}
+  document.getElementById("tabs").innerHTML = TABS.map((t, j) => `<button class="${j === i ? "on" : ""}" onclick="show(${j})">${t[0]}</button>`).join("");
+  document.getElementById("view").innerHTML = TABS[i][1]();
+}
+show(Math.min(cur, TABS.length - 1));
+</script>
+</body>
+</html>

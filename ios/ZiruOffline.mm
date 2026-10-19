@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
@@ -2118,6 +2119,7 @@ static void startGame() {
 
 #include "ZiruMods.inc"
 #include "ZiruJersey.inc"
+#include "ZiruUcl.inc"
 
 static BOOL hookDidFinish(id self, SEL _cmd, UIApplication* app, NSDictionary* opts) {
   gDelegate = self;
@@ -2136,7 +2138,7 @@ static BOOL hookDidFinish(id self, SEL _cmd, UIApplication* app, NSDictionary* o
   // Let UE4 initialize its window and Metal graphics first!
   BOOL res = ((BOOL(*)(id, SEL, id, id))gOrigDidFinish)(self, _cmd, app, opts);
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-    // installModButton(getAppWindow(self));
+    installUclButton(getAppWindow(self));
     if (!modsOK) showModError(getAppWindow(self), [NSString stringWithUTF8String:modError.c_str()]);
   });
 
@@ -2167,6 +2169,7 @@ static BOOL hookDidFinish(id self, SEL _cmd, UIApplication* app, NSDictionary* o
 
 static void hookBecomeActive(id self, SEL _cmd, UIApplication* app) {
   if (gOrigBecomeActive) ((void (*)(id, SEL, id))gOrigBecomeActive)(self, _cmd, app);
+  if (gGameStarted) installUclButton(getAppWindow(self));
   if (!gGameStarted && !gActiveImportVC) {
     NSString* why = nil;
     if (!dataReady(&why)) {

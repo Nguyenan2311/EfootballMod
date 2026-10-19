@@ -159,7 +159,7 @@ void ziruMlSimulateCurrentFixtureV83(int32_t a, int32_t b) {
         ziruMlGenerateCpuEventsV85(h, hs, f);
         ziruMlGenerateCpuEventsV85(w, as, f);
       }
-      if (!uclGroupFixture(f)) continue;  // knockout ties do not count in the group table
+      if (!uclCountsInTable(f)) continue;  // knockout ties do not count in the group table
       ziruMlUpdateTeamV83(h, hs, as);
       ziruMlUpdateTeamV83(w, as, hs);
     }
@@ -195,7 +195,7 @@ void ziruMyLeagueCommitStateV74(const std::string& res, int32_t h, int32_t a, bo
     ArrP hist = m ? Array::parse(*m) : newArr();
     hist->put(res);
     ziruDb->saveMeta("ziru_myleague_history_json", hist->toString());
-    if (!uclGroupFixture(f)) return;  // the user's table row counts group matches only
+    if (!uclCountsInTable(f)) return;  // the user's table row counts group matches only
     int gf = userHome ? h : a, ga = userHome ? a : h;
     ziruLeagueSaveInt("ziru_myleague_table_gf", ziruLeagueLoadInt("ziru_myleague_table_gf", 0) + gf);
     ziruLeagueSaveInt("ziru_myleague_table_ga", ziruLeagueLoadInt("ziru_myleague_table_ga", 0) + ga);

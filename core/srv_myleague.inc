@@ -171,7 +171,7 @@ Response handleZiruMyLeagueEnterV71() {
         ziruLeagueSaveInt("ziru_myleague_last_added_point", 0);
         ziruMlResetTableV83();
         ziruMlResetPlayerStatsV85();
-        uclStartSeason(team);
+        if (uclMode()) uclStartSeason(team);
         zs::logi("OFFLINE_SERVER", "[ZIRU_V81_1_TEAM_SELECTED] team=" + str(team) + " compe=" + str(compe));
       } else if (uclEnded()) {
         uclStartSeason(ziruLeagueLoadInt("ziru_myleague_team_id", 100));  // next season, same club

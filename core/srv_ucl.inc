@@ -32,7 +32,7 @@ void uclScore(int32_t f, int32_t h, int32_t a, int& hs, int& as) {
   int user = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
   JStr sh, sa;
   if ((h == user || a == user) && (sh = loadMeta(ziruMyLeagueFixtureKeyV74(f, "home"))) &&
-      (sa = loadMeta(ziruMyLeagueFixtureKeyV74(f, "away")))) {
+      (sa = loadMeta(ziruMyLeagueFixtureKeyV74(f, "away"))) && !sh->empty() && !sa->empty()) {  // blank: new season
     hs = parseInt(*sh);
     as = parseInt(*sa);
     return;
@@ -109,7 +109,7 @@ void uclNewSeason(int32_t user) {
     for (int32_t id : best[g]) { ga->put(id); if (id == user) userGroup = g; }
     groups->put(ga);
   }
-  st->put("groups", groups)->put("user_group", userGroup)->put("ended", "")->put("ties", newArr());
+  st->put("groups", groups)->put("user_group", userGroup)->put("ended", "")->put("rounds", newArr());
   ArrP fixtures = newArr();
   for (int md = 0; md < 6; md++)
     fixtures->put(newObj()->put("stage", "GROUP")->put("matches", uclGroupMatchday(groups->getJSONArray(userGroup), md)));
@@ -122,7 +122,7 @@ void uclNewSeason(int32_t user) {
 }
 
 // Fresh season for the user's club: what CMD_SET_SEASON_ENTER does on a team change, plus the UCL draw
-void uclStartSeason(int32_t user) {
+void uclResetSeason() {
   ziruLeagueSaveInt("ziru_myleague_fixture", 1);
   for (const char* k : {"points", "wins", "draws", "losses", "gf", "ga"}) ziruLeagueSaveInt(std::string("ziru_myleague_table_") + k, 0);
   ziruDb->saveMeta("ziru_myleague_history_json", "[]");
@@ -133,6 +133,10 @@ void uclStartSeason(int32_t user) {
     for (const char* k : {"result", "home", "away"}) ziruDb->saveMeta(ziruMyLeagueFixtureKeyV74(f, k), "");
   ziruDb->saveMeta("ziru_ucl_end_seen", "");
   ziruMlResetPlayerStatsV85();
+}
+
+void uclStartSeason(int32_t user) {
+  uclResetSeason();
   uclNewSeason(user);
 }
 
@@ -164,64 +168,143 @@ ArrP uclTableTeams() {
   return Array::parse(st->getJSONArray("groups")->getJSONArray(st->getInt("user_group"))->toString());
 }
 
-bool uclGroupFixture(int32_t f) { return f >= 1 && f <= 6; }
+// MyLeague mode, chosen on the Champions League screen: "UCL" (default) or "LEAGUE" (the national league)
+bool uclMode() {
+  JStr m = loadMeta("ziru_ml_mode");
+  return !m || *m != "LEAGUE";
+}
+
+// Whether fixture f counts in the MyLeague table: every league fixture, only group matches in UCL
+bool uclCountsInTable(int32_t f) { return !uclMode() || (f >= 1 && f <= 6); }
 
 bool uclEnded() {
   ObjP st = uclState();
-  return st && !st->optString("ended", "").empty();
+  return uclMode() && st && !st->optString("ended", "").empty();
 }
 
-// After the user's fixture f is stored: draw the next round once a round is complete
+// A simulated match also credits goals and assists to the clubs' MyLeague rosters
+void uclSimMatch(int32_t f, int32_t h, int32_t a) {
+  int hs, as;
+  uclSimScore(f, h, a, hs, as);
+  ziruMlGenerateCpuEventsV85(h, hs, f);
+  ziruMlGenerateCpuEventsV85(a, as, f);
+}
+
+// Winners of a knockout round whose legs are at fixtures f1, f2 (f2 = 0: one match, the final)
+std::vector<int32_t> uclRoundWinners(const ArrP& ties, int32_t f1, int32_t f2) {
+  std::vector<int32_t> out;
+  for (int i = 0; i < ties->length(); i++) {
+    int32_t x = ties->getJSONArray(i)->getInt(0), y = ties->getJSONArray(i)->getInt(1);
+    int gx, gy;
+    if (f2 == 0) {
+      uclScore(f1, x, y, gx, gy);
+    } else {  // leg 1 at y, leg 2 at x
+      int a1, b1, a2, b2;
+      uclScore(f1, y, x, a1, b1);
+      uclScore(f2, x, y, a2, b2);
+      gx = b1 + a2; gy = a1 + b2;
+    }
+    out.push_back(gx > gy ? x : gy > gx ? y : uclShootout(f2 ? f2 : f1, x, y));
+  }
+  return out;
+}
+
+ArrP uclPairs(const std::vector<int32_t>& clubs) {
+  ArrP ties = newArr();
+  for (size_t i = 0; i + 1 < clubs.size(); i += 2) ties->put(uclMatch(clubs[i], clubs[i + 1]));
+  return ties;
+}
+
+std::string uclNextStage(const std::string& s) {
+  return s == "GROUP" ? "R16" : s == "R16" ? "QF" : s == "QF" ? "SF" : "FINAL";
+}
+
+// The user is out: play the rest of the competition so the bracket and the scorers are complete
+void uclFastForward(const ObjP& st, std::vector<int32_t> clubs, std::string stage, int32_t f) {
+  ArrP rounds = st->getJSONArray("rounds");
+  while (true) {
+    ArrP ties = uclPairs(clubs);
+    bool final = stage == "FINAL";
+    int32_t f2 = final ? 0 : f + 1;
+    for (int i = 0; i < ties->length(); i++) {
+      int32_t x = ties->getJSONArray(i)->getInt(0), y = ties->getJSONArray(i)->getInt(1);
+      if (final) { uclSimMatch(f, x, y); continue; }
+      uclSimMatch(f, y, x);
+      uclSimMatch(f2, x, y);
+    }
+    rounds->put(newObj()->put("stage", stage)->put("ties", ties)->put("f1", f)->put("f2", f2));
+    clubs = uclRoundWinners(ties, f, f2);
+    if (final) { st->put("champion", clubs[0]); return; }
+    stage = uclNextStage(stage);
+    f += 2;
+  }
+}
+
+// After the user's fixture f is stored: play the rest of that matchday or leg, then draw the next round
 void uclAdvance(int32_t f) {
+  if (!uclMode()) return;
   ObjP st = uclEnsure();
   if (!st->optString("ended", "").empty()) return;
   ArrP fx = st->getJSONArray("fixtures");
   if (f != fx->length()) return;  // only the newest fixture moves the competition on
   int32_t user = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
-  std::string stage = fx->getJSONObject(f - 1)->getString("stage");
+  ObjP cur = fx->getJSONObject(f - 1);
+  std::string stage = cur->getString("stage");
+  if (!st->optJSONArray("rounds")) st->put("rounds", newArr());
+  ArrP rounds = st->getJSONArray("rounds");
+  if (rounds->length() == 0 && stage != "GROUP") {  // season drawn by the first UCL build: only "ties" was kept
+    int32_t f1 = f;
+    while (f1 > 1 && fx->getJSONObject(f1 - 2)->getString("stage") == stage) f1--;
+    rounds->put(newObj()->put("stage", stage)->put("ties", st->getJSONArray("ties"))->put("f1", f1)
+                    ->put("f2", stage == "FINAL" ? 0 : f1 + 1));
+    if (stage == "FINAL") cur->put("leg", 2);
+  }
   std::vector<int32_t> next;  // clubs through to the next round, in bracket order
   if (stage == "GROUP") {
-    if (f < 6) return;
     ArrP groups = st->getJSONArray("groups");
+    for (int g = 0; g < 8; g++) {  // the user's group is simulated by the MyLeague fixture itself
+      if (g == st->getInt("user_group")) continue;
+      ArrP ms = uclGroupMatchday(groups->getJSONArray(g), f - 1);
+      for (int i = 0; i < ms->length(); i++) uclSimMatch(f, ms->getJSONArray(i)->getInt(0), ms->getJSONArray(i)->getInt(1));
+    }
+    if (f < 6) { uclSave(st); return; }
     std::vector<std::vector<int32_t>> order;
     for (int g = 0; g < 8; g++) order.push_back(uclGroupOrder(groups->getJSONArray(g)));
     for (int g = 0; g < 8; g += 2)  // 1A-2B, 1B-2A, 1C-2D, ...
       for (int s = 0; s < 2; s++) { next.push_back(order[g + s][0]); next.push_back(order[g + 1 - s][1]); }
-  } else if (stage == "FINAL") {
-    ArrP m = fx->getJSONObject(f - 1)->getJSONArray("matches")->getJSONArray(0);
-    int hs, as;
-    uclScore(f, m->getInt(0), m->getInt(1), hs, as);
-    int32_t winner = hs > as ? m->getInt(0) : as > hs ? m->getInt(1) : uclShootout(f, m->getInt(0), m->getInt(1));
-    st->put("ended", winner == user ? "CHAMPION" : "RUNNER_UP")->put("champion", winner);
-    uclSave(st);
-    return;
   } else {
-    if (fx->getJSONObject(f - 1)->getInt("leg") != 2) return;
-    ArrP ties = st->getJSONArray("ties");
+    ObjP round = rounds->getJSONObject(rounds->length() - 1);
+    ArrP ties = round->getJSONArray("ties");
+    int leg = cur->getInt("leg");
     for (int i = 0; i < ties->length(); i++) {
-      int32_t x = ties->getJSONArray(i)->getInt(0), y = ties->getJSONArray(i)->getInt(1);  // leg 1 at y
-      int a1, b1, a2, b2;
-      uclScore(f - 1, y, x, a1, b1);
-      uclScore(f, x, y, a2, b2);
-      int gx = b1 + a2, gy = a1 + b2;
-      next.push_back(gx > gy ? x : gy > gx ? y : uclShootout(f, x, y));
+      int32_t x = ties->getJSONArray(i)->getInt(0), y = ties->getJSONArray(i)->getInt(1);
+      if (x == user || y == user) continue;
+      if (leg == 1) uclSimMatch(f, y, x); else uclSimMatch(f, x, y);
+    }
+    if (leg == 1) { uclSave(st); return; }
+    next = uclRoundWinners(ties, round->getInt("f1"), round->getInt("f2"));
+    if (stage == "FINAL") {
+      st->put("ended", next[0] == user ? "CHAMPION" : "RUNNER_UP")->put("champion", next[0]);
+      uclSave(st);
+      return;
     }
   }
-  std::string newStage = stage == "GROUP" ? "R16" : stage == "R16" ? "QF" : stage == "QF" ? "SF" : "FINAL";
+  std::string newStage = uclNextStage(stage);
   if (std::find(next.begin(), next.end(), user) == next.end()) {
-    st->put("ended", "OUT_" + (stage == "GROUP" ? std::string("GROUP") : stage));
+    st->put("ended", "OUT_" + stage);
+    uclFastForward(st, next, newStage, f + 1);
     uclSave(st);
     zs::logi("OFFLINE_SERVER", "[ZIRU_UCL] eliminated after " + stage);
     return;
   }
-  ArrP ties = newArr();
-  for (size_t i = 0; i + 1 < next.size(); i += 2) ties->put(uclMatch(next[i], next[i + 1]));
-  st->put("ties", ties);
+  ArrP ties = uclPairs(next);
+  bool final = newStage == "FINAL";
+  rounds->put(newObj()->put("stage", newStage)->put("ties", ties)->put("f1", f + 1)->put("f2", final ? 0 : f + 2));
   for (int i = 0; i < ties->length(); i++) {
     int32_t x = ties->getJSONArray(i)->getInt(0), y = ties->getJSONArray(i)->getInt(1);
     if (x != user && y != user) continue;
-    if (newStage == "FINAL") {
-      fx->put(newObj()->put("stage", "FINAL")->put("leg", 0)->put("matches", newArr()->put(uclMatch(x, y))));
+    if (final) {
+      fx->put(newObj()->put("stage", "FINAL")->put("leg", 2)->put("matches", newArr()->put(uclMatch(x, y))));
     } else {
       fx->put(newObj()->put("stage", newStage)->put("leg", 1)->put("matches", newArr()->put(uclMatch(y, x))));
       fx->put(newObj()->put("stage", newStage)->put("leg", 2)->put("matches", newArr()->put(uclMatch(x, y))));
@@ -229,4 +312,133 @@ void uclAdvance(int32_t f) {
   }
   uclSave(st);
   zs::logi("OFFLINE_SERVER", "[ZIRU_UCL] " + newStage + " " + ties->toString());
+}
+
+// Switch MyLeague between the national league and the Champions League; either way a new season starts
+void uclSetMode(const std::string& mode) {
+  bool league = mode == "LEAGUE";
+  ziruDb->saveMeta("ziru_ml_mode", league ? "LEAGUE" : "UCL");
+  if (league) {
+    uclResetSeason();
+    ziruMlResetTableV83();
+    ziruDb->saveMeta("ziru_ucl", "");
+  } else {
+    uclStartSeason(ziruLeagueLoadInt("ziru_myleague_team_id", 100));
+  }
+  zs::logi("OFFLINE_SERVER", "[ZIRU_UCL] MyLeague mode " + std::string(league ? "LEAGUE" : "UCL"));
+}
+
+// ---- Champions League screen (opened from the dylib's UCL button) ----
+
+std::string uclTeamName(int32_t id, const ObjP& real, const ObjP& native) {
+  ArrP r = real ? real->optJSONArray(str(id)) : nullptr;
+  if (r) return r->getString(0);
+  return native->optString(str(id), "Team " + str(id));
+}
+
+ObjP uclPageData() {
+  ObjP real = loadZiruJsonAssetObject("responses/ZIRU_REAL_TEAM_NAMES.json"), native = newObj();
+  ObjP reg = loadZiruJsonAssetObject("responses/ZIRU_ML_COMPETITION_REGISTRY.json");
+  ObjP comps = reg ? reg->optJSONObject("competitions") : nullptr;
+  for (const auto& c : comps ? comps->keys() : std::vector<std::string>()) {
+    ArrP ts = comps->getJSONObject(c)->optJSONArray("teams");
+    for (int i = 0; ts && i < ts->length(); i++) native->put(str(ts->getJSONObject(i)->getInt("team_id")), ts->getJSONObject(i)->getString("name"));
+  }
+  int32_t user = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
+  ObjP out = newObj()->put("mode", uclMode() ? "UCL" : "LEAGUE")->put("user_name", uclTeamName(user, real, native));
+  ObjP st = uclMode() ? uclState() : nullptr;
+  if (st) {
+    bool ended = !st->optString("ended", "").empty();
+    int played = 0;  // the user's fixtures played; every other match of those fixtures was simulated with them
+    for (JStr r; played < 13 && (r = loadMeta(ziruMyLeagueFixtureKeyV74(played + 1, "result"))) && !r->empty();) played++;
+    auto isPlayed = [&](int32_t f) { return ended || f <= played; };
+    out->put("ended", st->optString("ended", ""))->put("played", played);
+    if (st->has("champion")) out->put("champion", uclTeamName(st->getInt("champion"), real, native));
+    ArrP groups = newArr(), sg = st->getJSONArray("groups");
+    for (int g = 0; g < 8; g++) {
+      ArrP teams = sg->getJSONArray(g), matches = newArr();
+      std::map<int32_t, std::array<int, 7>> t;  // p w d l gf ga pts
+      for (int i = 0; i < 4; i++) t[teams->getInt(i)] = {0, 0, 0, 0, 0, 0, 0};
+      for (int md = 0; md < 6; md++) {
+        ArrP ms = uclGroupMatchday(teams, md);
+        for (int i = 0; i < ms->length(); i++) {
+          int32_t h = ms->getJSONArray(i)->getInt(0), a = ms->getJSONArray(i)->getInt(1);
+          ObjP m = newObj()->put("md", md + 1)->put("home", uclTeamName(h, real, native))->put("away", uclTeamName(a, real, native));
+          if (isPlayed(md + 1)) {
+            int hs, as;
+            uclScore(md + 1, h, a, hs, as);
+            m->put("hs", hs)->put("as", as);
+            for (auto [id, gf, ga] : {std::tuple<int32_t, int, int>{h, hs, as}, std::tuple<int32_t, int, int>{a, as, hs}}) {
+              auto& r = t[id];
+              r[0]++; r[4] += gf; r[5] += ga;
+              if (gf > ga) { r[1]++; r[6] += 3; } else if (gf == ga) { r[2]++; r[6]++; } else r[3]++;
+            }
+          }
+          matches->put(m);
+        }
+      }
+      std::vector<int32_t> order;
+      for (auto& [id, r] : t) order.push_back(id);
+      auto key = [&](int32_t id) { auto& r = t[id]; return std::make_tuple(r[6], r[4] - r[5], r[4], -id); };
+      std::sort(order.begin(), order.end(), [&](int32_t x, int32_t y) { return key(x) > key(y); });
+      ArrP table = newArr();
+      for (int32_t id : order) {
+        auto& r = t[id];
+        table->put(newObj()->put("team", uclTeamName(id, real, native))->put("user", id == user ? 1 : 0)->put("p", r[0])->put("w", r[1])
+                       ->put("d", r[2])->put("l", r[3])->put("gf", r[4])->put("ga", r[5])->put("pts", r[6]));
+      }
+      groups->put(newObj()->put("name", std::string(1, (char)('A' + g)))->put("table", table)->put("matches", matches));
+    }
+    out->put("groups", groups);
+    ArrP rounds = newArr(), sr = st->optJSONArray("rounds");
+    for (int i = 0; sr && i < sr->length(); i++) {
+      ObjP r = sr->getJSONObject(i);
+      int32_t f1 = r->getInt("f1"), f2 = r->getInt("f2");
+      ArrP ties = r->getJSONArray("ties"), list = newArr();
+      bool done = isPlayed(f2 ? f2 : f1);
+      std::vector<int32_t> winners = done ? uclRoundWinners(ties, f1, f2) : std::vector<int32_t>();
+      for (int j = 0; j < ties->length(); j++) {
+        int32_t x = ties->getJSONArray(j)->getInt(0), y = ties->getJSONArray(j)->getInt(1);
+        ObjP tie = newObj()->put("a", uclTeamName(x, real, native))->put("b", uclTeamName(y, real, native))
+                       ->put("user", x == user || y == user ? 1 : 0);
+        int s1, s2;  // goals of a, goals of b
+        if (f2 == 0) {
+          if (isPlayed(f1)) { uclScore(f1, x, y, s1, s2); tie->put("leg1", newArr()->put(s1)->put(s2)); }
+        } else {
+          if (isPlayed(f1)) { uclScore(f1, y, x, s2, s1); tie->put("leg1", newArr()->put(s1)->put(s2)); }
+          if (isPlayed(f2)) { uclScore(f2, x, y, s1, s2); tie->put("leg2", newArr()->put(s1)->put(s2)); }
+        }
+        if (done) tie->put("winner", winners[j] == x ? "a" : "b");
+        list->put(tie);
+      }
+      rounds->put(newObj()->put("stage", r->getString("stage"))->put("ties", list));
+    }
+    out->put("rounds", rounds);
+  }
+  ObjP names = loadZiruJsonAssetObject("responses/ZIRU_PLAYER_NAMES.json");
+  for (std::string kind : {"goal", "assist"}) {
+    JStr m = loadMeta("ziru_myleague_" + kind + "_stats_json");
+    ObjP stats = Object::parse(m && !m->empty() ? *m : std::string("{}"));
+    std::vector<ObjP> rows;
+    for (const auto& k : stats->keys()) rows.push_back(stats->getJSONObject(k));
+    std::stable_sort(rows.begin(), rows.end(), [](const ObjP& x, const ObjP& y) { return x->optInt("value") > y->optInt("value"); });
+    ArrP list = newArr();
+    for (size_t i = 0; i < rows.size() && i < 30; i++) {
+      int64_t pid = rows[i]->optLong("player_id", 0);
+      std::string name = names ? names->optString(str((int32_t)(pid & 0xFFFFFF)), "") : "";
+      list->put(newObj()->put("name", name.empty() ? "#" + str(pid) : name)
+                    ->put("team", uclTeamName(rows[i]->optInt("team_id"), real, native))->put("value", rows[i]->optInt("value")));
+    }
+    out->put(kind + "s", list);
+  }
+  return out;
+}
+
+// The screen itself: ZIRU_UCL_PAGE.html with the current season data in place of its /*DATA*/ marker
+std::string uclPageHtml() {
+  std::string page = readAsset("responses/ZIRU_UCL_PAGE.html");
+  const std::string marker = "/*DATA*/null";
+  size_t at = page.find(marker);
+  if (at != std::string::npos) page.replace(at, marker.size(), replaceAll(uclPageData()->toString(), "</", "<\\/"));
+  return page;
 }

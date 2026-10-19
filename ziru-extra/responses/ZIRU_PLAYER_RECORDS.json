@@ -82643,7 +82643,7 @@
       "is_lock": "NO",
       "play_style": [
         6,
-        0
+        24
       ],
       "initial_base_team_id": 126,
       "initial_base_national_team_id": 14,
@@ -82710,7 +82710,7 @@
         0,
         0,
         6,
-        0,
+        24,
         1,
         1,
         1,
@@ -86261,7 +86261,7 @@
       "is_lock": "NO",
       "play_style": [
         1,
-        0
+        24
       ],
       "initial_base_team_id": 1930,
       "initial_base_national_team_id": 44,
@@ -86328,7 +86328,7 @@
         0,
         0,
         1,
-        0,
+        24,
         0,
         0,
         0,
@@ -115205,7 +115205,7 @@
       "is_lock": "NO",
       "play_style": [
         1,
-        0
+        24
       ],
       "initial_base_team_id": 120,
       "initial_base_national_team_id": 12,
@@ -115272,7 +115272,7 @@
         0,
         0,
         1,
-        0,
+        24,
         0,
         1,
         0,
@@ -136913,7 +136913,7 @@
       "is_lock": "NO",
       "play_style": [
         6,
-        0
+        28
       ],
       "initial_base_team_id": 102,
       "initial_base_national_team_id": 5,
@@ -136980,7 +136980,7 @@
         0,
         0,
         6,
-        0,
+        28,
         1,
         1,
         0,
@@ -207263,7 +207263,7 @@
       "is_lock": "NO",
       "play_style": [
         20,
-        0
+        28
       ],
       "initial_base_team_id": 101,
       "initial_base_national_team_id": 12,
@@ -207330,7 +207330,7 @@
         0,
         0,
         20,
-        0,
+        28,
         0,
         0,
         0,
@@ -210881,7 +210881,7 @@
       "is_lock": "NO",
       "play_style": [
         20,
-        0
+        28
       ],
       "initial_base_team_id": 6209,
       "initial_base_national_team_id": 45,
@@ -210948,7 +210948,7 @@
         0,
         0,
         20,
-        0,
+        28,
         0,
         0,
         0,
@@ -219926,7 +219926,7 @@
       "is_lock": "NO",
       "play_style": [
         15,
-        0
+        30
       ],
       "initial_base_team_id": 12,
       "initial_base_national_team_id": 12,
@@ -219993,7 +219993,7 @@
         0,
         0,
         15,
-        0,
+        30,
         0,
         0,
         0,
@@ -232187,7 +232187,7 @@
       "is_lock": "NO",
       "play_style": [
         6,
-        0
+        28
       ],
       "initial_base_team_id": 109,
       "initial_base_national_team_id": 10,
@@ -232254,7 +232254,7 @@
         0,
         0,
         6,
-        0,
+        28,
         0,
         0,
         0,
@@ -277010,7 +277010,7 @@
       "is_lock": "NO",
       "play_style": [
         4,
-        0
+        26
       ],
       "initial_base_team_id": 109,
       "initial_base_national_team_id": 0,
@@ -277077,7 +277077,7 @@
         0,
         0,
         4,
-        0,
+        26,
         0,
         0,
         1,
