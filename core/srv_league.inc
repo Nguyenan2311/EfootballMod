@@ -231,6 +231,7 @@ void decodeZiruMyclubItemRequest(const Bytes& b) {
   try {
     ObjP req = decodeZiruRequestObject(&b);
     if (!req) return;
+    logRequest("ZIRU_ITEM_REQ", "[ZIRU_ITEM_REQ] " + req->toString());  // where skill-select training puts the chosen skill
 
     if (req->has("is_auto_use_item")) {
       std::string s = req->optString("is_auto_use_item", "");
