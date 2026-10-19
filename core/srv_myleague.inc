@@ -72,8 +72,16 @@ Response handleZiruGetMyclubPlayerData(const std::optional<Bytes>& b) {
         out->put("skillcard_id_list", cards);
         out->put("booster_training_info", boost);
         out->put("parameters", params);
-        out->put("original_parameters", ziruOriginalParameters(params, addSkills, catalogParams));
+        ArrP orig = ziruOriginalParameters(params, addSkills, catalogParams);
+        out->put("original_parameters", orig);
         if (addSkills) out->put("additional_skill_id", addSkills);
+        {  // diagnostics for the player-info skill page (internal skill ids)
+          std::string builtIn;
+          for (int s = 0; s < 74; s++) if (orig->optInt(kZiruSkillParameters[s], 0) == 1) builtIn += str(s) + ",";
+          logRequest("ZIRU_V11_PLAYERDATA", "[ZIRU_PD_SKILLS] serial=" + str(j2) + " catalog=" + (w ? "yes" : "no") +
+                     " saved=" + (owned ? "yes" : "no") + " params_len=" + str(params->length()) + " builtin=" + builtIn +
+                     " cards=" + cards->toString() + " additional=" + (addSkills ? addSkills->toString() : std::string("none")));
+        }
         out->put("result", "NOERR");
         out->put("rqid", (long long)ziruPlayerDataRqid);
         out->put("msgid", "CMD_GET_MYCLUB_PLAYER_DATA");

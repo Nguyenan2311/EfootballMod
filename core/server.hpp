@@ -128,6 +128,7 @@ class OfflineServer {
   int64_t ziruPlayerDataRqid = 0;
   int64_t ziruPlayerDataSerial = 0;
   ObjP ziruPlayerRecordsCache;
+  ObjP ziruLoginCardsCache;  // CmdLogin.json starting squad by card id
   JStr ziruSkillCategory;
   int32_t ziruSkillCategoryCode = 0;
   int32_t ziruSkillItemEffect = 0;

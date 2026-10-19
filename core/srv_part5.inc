@@ -167,6 +167,24 @@ ArrP ziruOriginalParameters(const ArrP& params, const ArrP& addSkills, const Arr
   return orig;
 }
 
+// The card's own data (catalog record, else the starting squad in CmdLogin.json) by exact card id.
+// A base-id match is another version of the player, with different playing styles. Read-only.
+ObjP ziruExactCard(int64_t id) {
+  ObjP w = getZiruPlayerWrapper(Value((long long)id), false);
+  if (w && w->optJSONObject("gameplayer")) return w->getJSONObject("gameplayer");
+  if (!ziruLoginCardsCache) {
+    ziruLoginCardsCache = newObj();
+    try {
+      ArrP gl = Object::parse(readAsset("responses/CmdLogin.json"))->getJSONObject("entry_info")->optJSONArray("gameplayer_list");
+      for (int i = 0; gl && i < gl->length(); i++) {
+        ObjP p = gl->optJSONObject(i), g;
+        if (p && (g = p->optJSONObject("gameplayer_id"))) ziruLoginCardsCache->put(str(g->optLong("id")), p);
+      }
+    } catch (const std::exception&) {}
+  }
+  return ziruLoginCardsCache->optJSONObject(str(id));
+}
+
 ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
   if (!jo) return jo;
   try {
@@ -183,6 +201,15 @@ ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
           if (gp) cur = gp;
           ObjP g2 = cur->optJSONObject("gameplayer_id");
           if (!g2 || g2->optLong("id") != id) cur = jo;
+        }
+        // Playing styles (play_style, parameters 61..69) exactly as on this card; older saves have invented
+        // or other-version styles
+        if (ObjP card = ziruExactCard(id)) {
+          ArrP ps = card->optJSONArray("play_style"), cp = card->optJSONArray("parameters");
+          if (ps && ps->length() > 0 && ps->optInt(0, 0) > 0) cur->put("play_style", Array::parse(ps->toString()));
+          for (ArrP a : {cur->optJSONArray("parameters"), cur->optJSONArray("original_parameters")})
+            if (cp && a && cp->length() >= 70 && a->length() >= 70)
+              for (int idx = 61; idx <= 69; ++idx) a->put(idx, cp->optInt(idx, 0));
         }
         ObjP w = getZiruPlayerWrapper(Value((long long)id), false);
         if (!w) {
@@ -203,14 +230,8 @@ ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
               if (bidVal > 0 && curIb->optInt(b, 0) == 0) curIb->put(b, bidVal);
             }
           }
-          ArrP ps = base->optJSONArray("play_style");
-          if (ps && ps->length() > 0 && ps->optInt(0, 0) > 0) cur->put("play_style", ps);
           ArrP baseParams = base->optJSONArray("parameters");
           ArrP curParams = cur->optJSONArray("parameters");
-          // Defensive (62) and AI (63..69) playing styles exactly as in the card data; older saves have invented ones
-          for (ArrP a : {curParams, cur->optJSONArray("original_parameters")})
-            if (baseParams && a && baseParams->length() >= 70 && a->length() >= 70)
-              for (int idx = 62; idx <= 69; ++idx) a->put(idx, baseParams->optInt(idx, 0));
           if (baseParams && curParams) {
             while (curParams->length() < 145) curParams->put(0);
             for (int idx = 70; idx <= 141; ++idx) {
