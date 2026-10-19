@@ -2,10 +2,10 @@
 """Rewrite the in-match player name (Player.bin) from "L. SUAREZ" to "L. Suárez" in a dt870 CPK.
 
 Player.bin holds 400-byte records with three 61-byte Latin name fields: display name at 210 (upper case, shown in
-match), full name at 271 ("Luis Suárez") and shirt name at 332 (kept upper case for the kit font). Each display word
+match), full name at 271 ("Luis Suárez") and shirt name at 332 (also shown in menus and on the kit). Each word
 takes its spelling from the matching word of the full name, otherwise it is title-cased.
 
-  python tools/titlecase_names.py dt870_mobile_and.cpk out/dt870_mobile_and.cpk
+  python tools/titlecase_names.py dt870_mobile_and.cpk out/dt870_mobile_and.cpk [--shirt]
 """
 import argparse, hashlib, json, re, struct, unicodedata, zlib
 from pathlib import Path
@@ -13,7 +13,7 @@ from pathlib import Path
 from cpk_toc import utf_table
 from repair_ios_tables import unpack_wesys
 
-RECORD, DISPLAY, FULL, FIELD = 400, 210, 271, 61
+RECORD, DISPLAY, FULL, SHIRT, FIELD = 400, 210, 271, 332, 61
 
 
 def plain(s):
@@ -34,22 +34,24 @@ def titlecase(display, full):
     return " ".join(out)
 
 
-def convert_player_bin(raw):
+def convert_player_bin(raw, fields=(DISPLAY,)):
     data = bytearray(raw)
     changed = 0
     for base in range(0, len(data) - RECORD + 1, RECORD):
         field = lambda off: data[base + off:base + off + FIELD].split(b"\0")[0].decode("utf-8")
-        display, full = field(DISPLAY), field(FULL)
-        new = titlecase(display, full).encode("utf-8")
-        if len(new) >= FIELD:
-            new = titlecase(display, "").encode("utf-8")  # accents from the full name overflow: plain title case
-        if new != display.encode("utf-8"):
-            data[base + DISPLAY:base + DISPLAY + FIELD] = new.ljust(FIELD, b"\0")
-            changed += 1
+        full = field(FULL)
+        for off in fields:
+            name = field(off)
+            new = titlecase(name, full).encode("utf-8")
+            if len(new) >= FIELD:
+                new = titlecase(name, "").encode("utf-8")  # accents from the full name overflow: plain title case
+            if new != name.encode("utf-8"):
+                data[base + off:base + off + FIELD] = new.ljust(FIELD, b"\0")
+                changed += 1
     return bytes(data), changed
 
 
-def convert_cpk(data):
+def convert_cpk(data, fields=(DISPLAY,)):
     import zopfli.zlib  # pip install zopfli: plain zlib -9 cannot fit Konami's allocation
     result = bytearray(data)
     header = utf_table(data[16:0x800])[0]
@@ -58,7 +60,7 @@ def convert_cpk(data):
     row = next(r for r in utf_table(data[toc + 16:toc + 16 + length]) if r.get("FileName") == "Player.bin")
     offset = min(toc, header["ContentOffset"]) + row["FileOffset"]
     size = row["FileSize"]
-    raw, changed = convert_player_bin(unpack_wesys(data[offset:offset + size]))
+    raw, changed = convert_player_bin(unpack_wesys(data[offset:offset + size]), fields)
     payload = zopfli.zlib.compress(raw, numiterations=5)
     # Same packing as repair_ios_tables: compressed, unencrypted WESYS, in the table's own slot
     packed = b"\x00\x01\x01WESYS" + struct.pack("<II", len(payload), len(raw)) + payload
@@ -74,13 +76,15 @@ if __name__ == "__main__":
     assert titlecase("DE JONG", "Frenkie de Jong") == "de Jong"
     assert titlecase("Y G KIM", "Kim Young-Gwon") == "Y G Kim"
     assert titlecase("O'NEILL", "") == "O'Neill"
+    assert titlecase("S.CAZORLA", "Santi Cazorla") == "S.Cazorla"
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("input", type=Path)
     ap.add_argument("output", type=Path)
+    ap.add_argument("--shirt", action="store_true", help="also the shirt name (menus, kit)")
     args = ap.parse_args()
     if args.output.resolve() == args.input.resolve():
         raise SystemExit("use a separate output path")
-    fixed, changed = convert_cpk(args.input.read_bytes())
+    fixed, changed = convert_cpk(args.input.read_bytes(), (DISPLAY, SHIRT) if args.shirt else (DISPLAY,))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(fixed)
     print(json.dumps({"names_changed": changed, "size": len(fixed), "sha256": hashlib.sha256(fixed).hexdigest()}, indent=2))

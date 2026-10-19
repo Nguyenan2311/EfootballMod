@@ -598,9 +598,38 @@ Response serveInner(Request& r) {
   if (isCmd("CMD_SET_PLAYDATA_MATCH") && ziruMyLeagueIsActive()) return handleZiruLeagueStatic("responses/ZIRU_ML_SET_PLAYDATA_MATCH.json");
   if (isCmd("CMD_RECV_CAMPAIGN_PASS_REWARD") && ziruMyLeagueIsActive()) return handleZiruLeagueStatic("responses/ZIRU_ML_CAMPAIGN_PASS_REWARD.json");
   if (isCmd("CMD_GET_MYCLUB_PLAYER_DATA")) return handleZiruGetMyclubPlayerData(ziruLastRequestBody);
-  if (isCmd("CMD_DELETE_MYCLUB_SKILL")) {  // diagnostics: still answered by the static response below
+  if (isCmd("CMD_DELETE_MYCLUB_SKILL")) {
+    // {"gameplayer_id":{"id","serial"},"delete_skill_index":n}: n indexes additional_skill_id as sent at login
     ObjP req = decodeZiruRequestJson(ziruLastRequestBody);
-    logRequest("ZIRU_SKILL_DELETE", "[ZIRU_SKILL_DELETE_REQ] " + (req ? req->toString() : std::string("undecodable")));
+    ObjP gid = req ? req->optJSONObject("gameplayer_id") : nullptr;
+    int64_t serial = gid ? gid->optLong("serial", 0) : 0;
+    int index = req ? req->optInt("delete_skill_index", -1) : -1;
+    ObjP owned = serial > 0 ? z27OwnedPlayer(serial) : nullptr;
+    if (owned) {
+      zs::Prefs& prefs = sp("almanac_state");
+      std::string key = "ziru_skills_" + str(serial);
+      std::vector<int32_t> al;
+      std::string s = prefs.getString(key, "");
+      for (auto& part : split(s, ',')) {
+        try { int v = parseInt(part); if (isZiruSkillId(v) && !vcontains(al, v)) al.push_back(v); } catch (const NumberFormat&) {}
+      }
+      ArrP sk = owned->optJSONArray("additional_skill_id");
+      if (s.empty() && sk)
+        for (int i = 0; i < sk->length(); i++) if (isZiruSkillId(sk->optInt(i, -1))) al.push_back(sk->optInt(i));
+      if (index >= 0 && index < (int)al.size()) {
+        logRequest("ZIRU_SKILL_DELETE", "[ZIRU_SKILL_DELETE] serial=" + str(serial) + " index=" + str(index) + " skill=" + str(al[index]));
+        al.erase(al.begin() + index);
+        ArrP ja = newArr();
+        for (int v : al) ja->put(v);
+        owned->put("additional_skill_id", ja);
+        ziruSetSkillBits(owned->optJSONArray("parameters"), gid->optLong("id", 0), al);
+        prefs.edit().putString(key, joinInts(al)).commit();
+        saveZiruPlayerToDb(owned);
+      }
+    }
+    ObjP jo = newObj()->put("result", "NOERR")->put("rqid", (long long)(req ? req->optLong("rqid", 1) : 1))
+                      ->put("msgid", "CMD_DELETE_MYCLUB_SKILL");
+    return serveObjectAsEncryptedMsgPack(jo);
   }
   if (isCmd("CMD_SET_MYCLUB_SQUAD_INFO")) return handleZiruSquadAck();
   if (isCmd("CMD_SELL_MYCLUB_GAMEPLAYER")) {

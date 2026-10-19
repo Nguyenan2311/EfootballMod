@@ -91,13 +91,44 @@ def repair_cpk_bytes(data):
     return bytes(result), changes
 
 
+def cpk_slot(data, name):
+    header = utf_table(data[16:0x800])[0]
+    toc = header["TocOffset"]
+    length = struct.unpack_from("<Q", data, toc + 8)[0]
+    row = next(r for r in utf_table(data[toc + 16:toc + 16 + length]) if r.get("FileName") == name)
+    return min(toc, header["ContentOffset"]) + row["FileOffset"], row["FileSize"]
+
+
+def use_native_skill_table(data, dt200):
+    """Replace PlayerSkill.bin with the iOS 11.1.1 one from the app's dt200 CPK.
+
+    The compacted Android table has 72 records; iOS has 74 (new skills at 25 and 68), so from 25 on every
+    record, including the related-skill field in its upper bits, sat on the wrong skill: skill-select
+    training then showed nearly every skill as already learned.
+    """
+    offset, size = cpk_slot(dt200, "PlayerSkill.bin")
+    native = unpack_wesys(dt200[offset:offset + size])
+    offset, size = cpk_slot(data, "PlayerSkill.bin")
+    payload = zlib.compress(native, 9)
+    packed = b"\x00\x01\x01WESYS" + struct.pack("<II", len(payload), len(native)) + payload
+    if len(packed) > size:
+        raise ValueError("native PlayerSkill.bin exceeds the table allocation")
+    result = bytearray(data)
+    result[offset:offset + size] = packed.ljust(size, b"\0")
+    return bytes(result)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("input", type=Path)
     ap.add_argument("output", type=Path)
+    ap.add_argument("--native-dt200", type=Path, help="app's cpk/dt200_mobile_all.cpk: take PlayerSkill.bin from it")
     args = ap.parse_args()
     original = args.input.read_bytes()
     fixed, changes = repair_cpk_bytes(original)
+    if args.native_dt200:
+        fixed = use_native_skill_table(fixed, args.native_dt200.read_bytes())
+        changes.append({"table": "PlayerSkill.bin", "source": "native dt200"})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     if args.output.resolve() == args.input.resolve():
         raise SystemExit("use a separate output path")

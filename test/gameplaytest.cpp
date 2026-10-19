@@ -314,6 +314,20 @@ int main() {
         }
       }
       check(entryHasSkill, "additional skill survives post-match entry info");
+      call(s, "CMD_DELETE_MYCLUB_SKILL", newObj()->put("gameplayer_id", newObj()->put("id", 1)->put("serial", 303))
+          ->put("delete_skill_index", 0));
+    }
+    {
+      OfflineServer s(cfg);
+      auto players = call(s, "CMD_LOGIN")->getJSONObject("entry_info")->getJSONArray("gameplayer_list");
+      bool deleted = false;
+      for (int i = 0; i < players->length(); ++i) {
+        auto p = players->getJSONObject(i);
+        if (p->getJSONObject("gameplayer_id")->getLong("serial") == 303)
+          deleted = p->getJSONArray("additional_skill_id")->length() == 0 &&
+                    p->getJSONArray("parameters")->getInt(kZiruSkillParameters[0]) == 0;
+      }
+      check(deleted, "deleted trained skill stays deleted after restart");
     }
     {
       OfflineServer s(cfg);
