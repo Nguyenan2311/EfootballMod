@@ -57,12 +57,12 @@ Response handleZiruGetMyclubPlayerData(const std::optional<Bytes>& b) {
         e->put("level", lim + 1);
         e->put("experience", 0);
         expl->put(e);
+        ArrP orig = ziruOriginalParameters(params, addSkills, catalogParams);
+        // skillcard_id_list = the skills skill-select training may teach: every regular skill that is not built in
+        // (trained ones stay listed so they can be re-picked). Listing the player's own skills greyed out all.
         ArrP cards = newArr();
-        for (int i = 0; i < 74; i++) {
-          int pIdx = kZiruSkillParameters[i];
-          // 142/143 hold boosters in the save layout: Showtime skills count only when trained
-          if (pIdx <= 141 ? params->optInt(pIdx, 0) == 1 : vcontains(trained, i)) cards->put(i);
-        }
+        for (int i = 0; i < 72; i++)
+          if (orig->optInt(kZiruSkillParameters[i], 0) != 1) cards->put(i);
         ObjP boost = Object::parse("{\"use_item_num_list_random\":[0,1],\"use_item_num_list_select\":[0,100]}");
         ObjP out = newObj();
         out->put("careerplan_list", career);
@@ -70,7 +70,6 @@ Response handleZiruGetMyclubPlayerData(const std::optional<Bytes>& b) {
         out->put("skillcard_id_list", cards);
         out->put("booster_training_info", boost);
         out->put("parameters", params);
-        ArrP orig = ziruOriginalParameters(params, addSkills, catalogParams);
         out->put("original_parameters", orig);
         if (addSkills) out->put("additional_skill_id", addSkills);
         {  // diagnostics for the player-info skill page (internal skill ids)
