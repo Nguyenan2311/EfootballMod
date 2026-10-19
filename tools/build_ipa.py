@@ -422,7 +422,28 @@ def build_ipa(app, dylib, apk, out, report, bundle_id, display_name, extra_pak=N
                             report["ios_table_fixes"] = table_fixes
                     z.writestr(zi, content)
                     n += 1
+                    report.setdefault("livedata", []).append(arc[len(root):])
+        # APKs without assets/livedata (e.g. Ziru_27.apk): ship the repo's livedata, whose dt870 is already
+        # repaired for iOS. The dylib then copies the real dt870 into Documents/Download as with an APK build.
+        extra = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ziru-extra")
+        if not report.get("livedata") and os.path.isdir(os.path.join(extra, "livedata")):
+            for fn in sorted(os.listdir(os.path.join(extra, "livedata"))):
+                z.write(os.path.join(extra, "livedata", fn), root + "ziru/livedata/" + fn, compress_type=zipfile.ZIP_DEFLATED)
+                report.setdefault("livedata", []).append("ziru/livedata/" + fn)
+                n += 1
+            dt870 = os.path.join(extra, "livedata", "dt870_mobile_and.cpk")
+            if os.path.exists(dt870):
+                # original = the Android file the client may still hold, as named by the login version_file
+                login = json.load(open(os.path.join(extra, "responses", "CmdLogin.json"), encoding="utf-8"))
+                version = json.loads(login["livedata_info"]["version_file"])
+                table_fixes["dt870_mobile_and.cpk"] = {"original_sha256": version["dt870Hash"], "sha256": sha256_file(dt870),
+                                                       "changes": "prebuilt in ziru-extra/livedata"}
+            if not native_livedata and os.path.exists(os.path.join(extra, "native-livedata.json")):
+                z.write(os.path.join(extra, "native-livedata.json"), root + "ziru/native-livedata.json")
+                n += 1
+            log(f"livedata: {len(report['livedata'])} files from {os.path.join(extra, 'livedata')} (APK has none)")
         if table_fixes:
+            report["ios_table_fixes"] = table_fixes
             z.writestr(root + "ziru/table-fixes.json", json.dumps(table_fixes))
             n += 1
         if native_livedata:
