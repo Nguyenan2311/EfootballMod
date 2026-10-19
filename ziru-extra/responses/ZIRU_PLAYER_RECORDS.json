@@ -37418,7 +37418,7 @@
       "is_lock": "NO",
       "play_style": [
         1,
-        0
+        24
       ],
       "initial_base_team_id": 108,
       "initial_base_national_team_id": 0,
@@ -37485,7 +37485,7 @@
         0,
         0,
         1,
-        0,
+        24,
         0,
         0,
         1,
@@ -50483,7 +50483,7 @@
       "is_lock": "NO",
       "play_style": [
         4,
-        0
+        25
       ],
       "initial_base_team_id": 100,
       "initial_base_national_team_id": 0,
@@ -50550,7 +50550,7 @@
         0,
         0,
         4,
-        0,
+        25,
         1,
         1,
         1,
@@ -50885,7 +50885,7 @@
       "is_lock": "NO",
       "play_style": [
         14,
-        0
+        28
       ],
       "initial_base_team_id": 101,
       "initial_base_national_team_id": 13,
@@ -50952,7 +50952,7 @@
         0,
         0,
         14,
-        0,
+        28,
         0,
         1,
         0,
@@ -60935,7 +60935,7 @@
       "is_lock": "NO",
       "play_style": [
         11,
-        0
+        30
       ],
       "initial_base_team_id": 0,
       "initial_base_national_team_id": 12,
@@ -61002,7 +61002,7 @@
         0,
         0,
         11,
-        0,
+        30,
         0,
         1,
         1,
@@ -114401,7 +114401,7 @@
       "is_lock": "NO",
       "play_style": [
         14,
-        0
+        25
       ],
       "initial_base_team_id": 18756,
       "initial_base_national_team_id": 52,
@@ -114468,7 +114468,7 @@
         0,
         0,
         14,
-        0,
+        25,
         0,
         1,
         1,
@@ -130481,7 +130481,7 @@
       "is_lock": "NO",
       "play_style": [
         13,
-        0
+        25
       ],
       "initial_base_team_id": 125,
       "initial_base_national_team_id": 12,
@@ -130548,7 +130548,7 @@
         0,
         0,
         13,
-        0,
+        25,
         0,
         1,
         0,
@@ -137315,7 +137315,7 @@
       "is_lock": "NO",
       "play_style": [
         4,
-        0
+        25
       ],
       "initial_base_team_id": 108,
       "initial_base_national_team_id": 7,
@@ -137382,7 +137382,7 @@
         0,
         0,
         4,
-        0,
+        25,
         1,
         1,
         1,
@@ -152993,7 +152993,7 @@
       "is_lock": "NO",
       "play_style": [
         20,
-        0
+        28
       ],
       "initial_base_team_id": 6058,
       "initial_base_national_team_id": 7,
@@ -153060,7 +153060,7 @@
         0,
         0,
         20,
-        0,
+        28,
         1,
         1,
         0,
@@ -171284,7 +171284,7 @@
       "is_lock": "NO",
       "play_style": [
         9,
-        0
+        27
       ],
       "initial_base_team_id": 109,
       "initial_base_national_team_id": 8,
@@ -171351,7 +171351,7 @@
         0,
         0,
         9,
-        0,
+        27,
         0,
         0,
         0,
@@ -174500,7 +174500,7 @@
       "is_lock": "NO",
       "play_style": [
         11,
-        0
+        30
       ],
       "initial_base_team_id": 6089,
       "initial_base_national_team_id": 12,
@@ -174567,7 +174567,7 @@
         0,
         0,
         11,
-        0,
+        30,
         0,
         0,
         0,
@@ -180128,7 +180128,7 @@
       "is_lock": "NO",
       "play_style": [
         1,
-        0
+        26
       ],
       "initial_base_team_id": 119,
       "initial_base_national_team_id": 45,
@@ -180195,7 +180195,7 @@
         0,
         0,
         1,
-        0,
+        26,
         0,
         1,
         0,
@@ -186158,7 +186158,7 @@
       "is_lock": "NO",
       "play_style": [
         22,
-        0
+        25
       ],
       "initial_base_team_id": 108,
       "initial_base_national_team_id": 10,
@@ -186225,7 +186225,7 @@
         0,
         0,
         22,
-        0,
+        25,
         0,
         1,
         0,
@@ -206861,7 +206861,7 @@
       "is_lock": "NO",
       "play_style": [
         9,
-        0
+        29
       ],
       "initial_base_team_id": 122,
       "initial_base_national_team_id": 12,
@@ -206928,7 +206928,7 @@
         0,
         0,
         9,
-        0,
+        29,
         0,
         0,
         0,
@@ -209273,7 +209273,7 @@
       "is_lock": "NO",
       "play_style": [
         0,
-        0
+        27
       ],
       "initial_base_team_id": 100,
       "initial_base_national_team_id": 1,
@@ -209340,7 +209340,7 @@
         0,
         0,
         0,
-        0,
+        27,
         0,
         0,
         0,
@@ -268568,7 +268568,7 @@
       "is_lock": "NO",
       "play_style": [
         20,
-        0
+        27
       ],
       "initial_base_team_id": 173,
       "initial_base_national_team_id": 5,
@@ -268635,7 +268635,7 @@
         0,
         0,
         20,
-        0,
+        27,
         0,
         0,
         0,
@@ -269372,7 +269372,7 @@
       "is_lock": "NO",
       "play_style": [
         18,
-        0
+        24
       ],
       "initial_base_team_id": 121,
       "initial_base_national_team_id": 0,
@@ -269439,7 +269439,7 @@
         0,
         0,
         18,
-        0,
+        24,
         1,
         1,
         1,
@@ -276407,7 +276407,7 @@
       "is_lock": "NO",
       "play_style": [
         3,
-        0
+        26
       ],
       "initial_base_team_id": 172,
       "initial_base_national_team_id": 49,
@@ -276474,7 +276474,7 @@
         0,
         0,
         3,
-        0,
+        26,
         0,
         0,
         0,
@@ -283241,7 +283241,7 @@
       "is_lock": "NO",
       "play_style": [
         4,
-        0
+        25
       ],
       "initial_base_team_id": 102,
       "initial_base_national_team_id": 9,
@@ -283308,7 +283308,7 @@
         0,
         0,
         4,
-        0,
+        25,
         1,
         1,
         1,
@@ -291482,7 +291482,7 @@
       "is_lock": "NO",
       "play_style": [
         14,
-        0
+        28
       ],
       "initial_base_team_id": 124,
       "initial_base_national_team_id": 6,
@@ -291549,7 +291549,7 @@
         0,
         0,
         14,
-        0,
+        28,
         0,
         0,
         0,
