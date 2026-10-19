@@ -1,0 +1,86 @@
+name: build-dylib
+on:
+  push:
+    branches: [main, feature/online-1.1]
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  linux-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev zlib1g-dev libssl-dev
+      - name: build host tools
+        run: make -j2 build/runcpp build/packtest build/gameplaytest build/modtest
+      - name: user mod ZIP installation and recovery
+        run: python3 test/mod_fixtures.py /tmp/mod-test && ./build/modtest /tmp/mod-test
+      - name: offline gameplay regression tests
+        run: ./build/gameplaytest
+      - name: native iOS database table conversion
+        run: python3 -m unittest discover -s test -p 'ios_tables_test.py' -v
+      - name: online encrypted two-client integration tests
+        run: |
+          python3 -m pip install -r online/requirements.txt
+          python3 -m unittest discover -s online -p 'test_online_server.py' -v
+      - name: data-pack importer self-test
+        run: |
+          python3 - <<'PY'
+          import os, zipfile, hashlib, json
+          os.makedirs('/tmp/pk/src/pak', exist_ok=True); os.makedirs('/tmp/pk/src/cpk', exist_ok=True)
+          open('/tmp/pk/src/pak/a_mobile_ios.ucas','wb').write(os.urandom(50_000_000))
+          open('/tmp/pk/src/cpk/b_mobile_all.cpk','wb').write(b'hello\n'*500000)
+          files=[]
+          for d in ('pak','cpk'):
+              for n in sorted(os.listdir(f'/tmp/pk/src/{d}')):
+                  p=f'/tmp/pk/src/{d}/{n}'; files.append({"path":f"{d}/{n}","size":os.path.getsize(p),"sha256":hashlib.sha256(open(p,'rb').read()).hexdigest()})
+          man={"format":1,"data_id":"ci-1","client_version":"11.1.1","client_build":"11.1.101","mod_version":"1.0.0","files":files}
+          with zipfile.ZipFile('/tmp/pk/pack.zip','w',allowZip64=True) as z:
+              z.writestr('data-manifest.json', json.dumps(man))
+              z.write('/tmp/pk/src/pak/a_mobile_ios.ucas','pak/a_mobile_ios.ucas',compress_type=zipfile.ZIP_STORED)
+              z.write('/tmp/pk/src/cpk/b_mobile_all.cpk','cpk/b_mobile_all.cpk',compress_type=zipfile.ZIP_DEFLATED)
+          PY
+          mkdir -p /tmp/pk/gd /tmp/pk/docs && ./build/packtest /tmp/pk/pack.zip /tmp/pk/gd /tmp/pk/docs
+  ios-dylib:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: build ZiruOffline.dylib (arm64, iOS 15+)
+        run: |
+          set -e
+          mkdir -p build
+          SDK=$(xcrun --sdk iphoneos --show-sdk-path)
+          xcrun --sdk iphoneos clang++ -arch arm64 -isysroot "$SDK" -miphoneos-version-min=15.0 \
+            -std=c++17 -O2 -fobjc-arc -fvisibility=hidden -Wall -Wno-unused \
+            -dynamiclib -install_name @executable_path/Frameworks/ZiruOffline.dylib \
+            ios/ZiruOffline.mm ios/ZiruFontPak.mm ios/ZiruWebView.mm core/jvalue.cpp core/codec.cpp core/store.cpp core/server.cpp core/zipread.cpp core/datapack.cpp core/modpack.cpp \
+            -framework Foundation -framework UIKit -framework UniformTypeIdentifiers -framework Security -framework QuartzCore -framework CoreGraphics -framework WebKit \
+            -lz -lsqlite3 -o build/ZiruOffline.dylib 2> build/clang.log || {
+              cat build/clang.log
+              exit 1; }
+          grep -E "warning:" build/clang.log | head -30 | while IFS= read -r l; do echo "::notice::$l"; done || true
+          codesign -f -s - build/ZiruOffline.dylib
+          otool -L build/ZiruOffline.dylib
+          shasum -a 256 build/ZiruOffline.dylib | tee build/ZiruOffline.dylib.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ZiruOffline-dylib
+          path: |
+            build/ZiruOffline.dylib
+            build/ZiruOffline.dylib.sha256
+            tools/build_ipa.py
+      - name: release
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('build-{0}', github.run_number) }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('Build {0} ({1})', github.run_number, github.sha) }}
+          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          body: |
+            ZiruOffline.dylib (arm64, iOS 15+) cho eFootball iOS 11.1.1 (build 11.1.101) + tools/build_ipa.py.
+            Chưa thử trên thiết bị. Xem README để ghép IPA.
+          files: |
+            build/ZiruOffline.dylib
+            build/ZiruOffline.dylib.sha256
+            tools/build_ipa.py

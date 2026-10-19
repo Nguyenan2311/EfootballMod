@@ -1,0 +1,1 @@
+{"dt870_mobile_and.cpk": {"original_sha256": "fce1f90f65e48c4f99c5654a4ca56c917663d6033f6adc16a9014f5786a93259", "sha256": "8a2a77254d5b86f35feb2111eb24a689c5b362167eac2af8a07c24318a2136ff", "changes": [{"table": "PlayerSkill.bin", "before": 7488, "after": 288, "records": 72}, {"table": "Playstyle.bin", "before": 6048, "after": 144, "records": 36}]}}

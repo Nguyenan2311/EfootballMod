@@ -1,0 +1,130 @@
+{
+  "description": "Default authentic coach profiles and stats (non-maxping, standard Konami values)",
+  "market_coach_list": [
+    {
+      "coach_id": 4083,
+      "gp": 12000,
+      "pes_point": 250,
+      "overall": 84,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    },
+    {
+      "coach_id": 53341,
+      "gp": 28000,
+      "pes_point": 500,
+      "overall": 92,
+      "formation_data": "4-2-2-2",
+      "is_locked": "0",
+      "management": 920,
+      "adaptability": 94,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "1"
+    },
+    {
+      "coach_id": 17593796657368,
+      "gp": 15000,
+      "pes_point": 250,
+      "overall": 88,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    },
+    {
+      "coach_id": 17592454480088,
+      "gp": 15000,
+      "pes_point": 250,
+      "overall": 88,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    },
+    {
+      "coach_id": 17592186146302,
+      "gp": 15000,
+      "pes_point": 250,
+      "overall": 88,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    },
+    {
+      "coach_id": 17594073481737,
+      "gp": 15000,
+      "pes_point": 250,
+      "overall": 88,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    },
+    {
+      "coach_id": 8388824,
+      "gp": 15000,
+      "pes_point": 250,
+      "overall": 88,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    },
+    {
+      "coach_id": 17593259887058,
+      "gp": 15000,
+      "pes_point": 250,
+      "overall": 88,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    },
+    {
+      "coach_id": 17592991452928,
+      "gp": 15000,
+      "pes_point": 250,
+      "overall": 88,
+      "formation_data": "4-3-3",
+      "is_locked": "0",
+      "management": 460,
+      "adaptability": 82,
+      "adaptability_rate": 100,
+      "is_use_variable_formation": "0"
+    }
+  ],
+  "default_coach_list": [],
+  "coaches_norma": {
+    "msgid": "CMD_GET_MYCLUB_COACH_CONTRACT_NORMA",
+    "rqid": 123456789,
+    "result": "NOERR",
+    "coarch_norma_list": [
+      {
+        "current_point_division": 800,
+        "current_point_sim": 400,
+        "current_point_vscom": 350,
+        "norma_point_division": 750,
+        "norma_point_sim": 380,
+        "norma_point_vscom": 320,
+        "is_contract_end": "NO"
+      }
+    ]
+  }
+}

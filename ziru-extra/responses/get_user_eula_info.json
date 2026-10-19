@@ -1,0 +1,41 @@
+{
+  "user_eula_info": {
+    "eula_ip_country_a3": "TUR",
+    "eula_select_country_a3": "TUR",
+    "eula_ip_state": "NONE",
+    "eula_select_state": "",
+    "eula_version": {
+      "eula": "8.00",
+      "eula_privacy_notice": "4.00",
+      "eula_myclub": "6.00",
+      "eula_japan_version": "8.00",
+      "eula_myclub_japan": "7.00"
+    },
+    "eula_country_age_kind": "NONE",
+    "eula_privacy_action": "NONE"
+  },
+  "country_status": "NO_CHANGE",
+  "user_eula_season": "2025",
+  "user_opt_setting": {
+    "dont_sell": "NO",
+    "dont_sell_changeable": "YES"
+  },
+  "age": "2000-01-31",
+  "is_disable_sharing": "NO",
+  "is_link_konamiid": "NO",
+  "is_correspond_konamiid_info": "YES",
+  "konamiid_age_kind": "NONE",
+  "user_age_kind_last_login": "ADULT",
+  "is_withdrawn_konamiid": "NO",
+  "is_deleted_user": "NO",
+  "is_link_kid": "NO",
+  "is_correspond_kid_info": "YES",
+  "is_invalid_kid_session_id": "NO",
+  "kid_country_code": "",
+  "select_country_privacy_action": "NONE",
+  "is_user_delete_scheduled": "NO",
+  "user_delete_scheduled_date": 0,
+  "result": "NOERR",
+  "rqid": 1,
+  "msgid": "CMD_GET_USER_EULA_INFO"
+}

@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "weather": "WEATHER_TYPE_FINE",
+  "time_zone": "TIME_ZONE_TYPE_DAY",
+  "_known_good_values": {
+    "weather": ["WEATHER_TYPE_FINE"],
+    "time_zone": ["TIME_ZONE_TYPE_DAY", "TIME_ZONE_TYPE_NIGHT"]
+  },
+  "_note": "Only values seen in the dumps are listed as known good. Other weather strings (rain/snow) are untested."
+}

@@ -1,0 +1,1766 @@
+{
+  "event_log_list": [
+    {
+      "event_id": 90002,
+      "entry_status": "ENTRY",
+      "use_preset_team_id": 0,
+      "age_category": "FULL",
+      "is_ranking_fix": "NO",
+      "pt_event_point": 0,
+      "pt_cleared_point": 0,
+      "pt_selected_com_lv": "REGULAR",
+      "pt_rest_point": 0,
+      "pt_next_reward": [],
+      "pt_is_next_reward_dialog": "NO",
+      "pt_main_rest_point": 0,
+      "pt_main_reward": [],
+      "pt_tour_bonus_select_nation_id": 0,
+      "ch_mission_log": [],
+      "coop_daily_point": 0,
+      "coop_daily_point_limit": 0,
+      "coop_vscom_win_point_normal": [],
+      "coop_vscom_win_point_bonus": [],
+      "coop_vscom_cpu_level_rate": [],
+      "squad_challenge_event_log": []
+    },
+    {
+      "event_id": 90003,
+      "entry_status": "ENTRY",
+      "use_preset_team_id": 0,
+      "age_category": "FULL",
+      "is_ranking_fix": "NO",
+      "pt_event_point": 0,
+      "pt_cleared_point": 0,
+      "pt_selected_com_lv": "REGULAR",
+      "pt_rest_point": 0,
+      "pt_next_reward": [],
+      "pt_is_next_reward_dialog": "NO",
+      "pt_main_rest_point": 0,
+      "pt_main_reward": [],
+      "pt_tour_bonus_select_nation_id": 0,
+      "ch_mission_log": [],
+      "coop_daily_point": 0,
+      "coop_daily_point_limit": 0,
+      "coop_vscom_win_point_normal": [],
+      "coop_vscom_win_point_bonus": [],
+      "coop_vscom_cpu_level_rate": [],
+      "squad_challenge_event_log": []
+    },
+    {
+      "event_id": 90004,
+      "entry_status": "ENTRY",
+      "use_preset_team_id": 0,
+      "age_category": "FULL",
+      "is_ranking_fix": "NO",
+      "pt_event_point": 0,
+      "pt_cleared_point": 0,
+      "pt_selected_com_lv": "REGULAR",
+      "pt_rest_point": 0,
+      "pt_next_reward": [],
+      "pt_is_next_reward_dialog": "NO",
+      "pt_main_rest_point": 0,
+      "pt_main_reward": [],
+      "pt_tour_bonus_select_nation_id": 0,
+      "ch_mission_log": [],
+      "coop_daily_point": 0,
+      "coop_daily_point_limit": 0,
+      "coop_vscom_win_point_normal": [],
+      "coop_vscom_win_point_bonus": [],
+      "coop_vscom_cpu_level_rate": [],
+      "squad_challenge_event_log": []
+    },
+    {
+      "event_id": 90005,
+      "entry_status": "ENTRY",
+      "use_preset_team_id": 0,
+      "age_category": "FULL",
+      "is_ranking_fix": "NO",
+      "pt_event_point": 0,
+      "pt_cleared_point": 0,
+      "pt_selected_com_lv": "REGULAR",
+      "pt_rest_point": 0,
+      "pt_next_reward": [],
+      "pt_is_next_reward_dialog": "NO",
+      "pt_main_rest_point": 0,
+      "pt_main_reward": [],
+      "pt_tour_bonus_select_nation_id": 0,
+      "ch_mission_log": [],
+      "coop_daily_point": 0,
+      "coop_daily_point_limit": 0,
+      "coop_vscom_win_point_normal": [],
+      "coop_vscom_win_point_bonus": [],
+      "coop_vscom_cpu_level_rate": [],
+      "squad_challenge_event_log": []
+    },
+    {
+      "event_id": 100004,
+      "entry_status": "ENTRY",
+      "use_preset_team_id": 0,
+      "age_category": "FULL",
+      "is_ranking_fix": "NO",
+      "pt_event_point": 0,
+      "pt_cleared_point": 0,
+      "pt_selected_com_lv": "REGULAR",
+      "pt_rest_point": 0,
+      "pt_next_reward": [],
+      "pt_is_next_reward_dialog": "NO",
+      "pt_main_rest_point": 0,
+      "pt_main_reward": [],
+      "pt_tour_bonus_select_nation_id": 0,
+      "ch_mission_log": [],
+      "coop_daily_point": 0,
+      "coop_daily_point_limit": 0,
+      "coop_vscom_win_point_normal": [],
+      "coop_vscom_win_point_bonus": [],
+      "coop_vscom_cpu_level_rate": [],
+      "squad_challenge_event_log": []
+    }
+  ],
+  "event_list": [
+    {
+      "event_id": 90002,
+      "event_name": "UEFA Champions League - C\u00fap C1 Ch\u00e2u \u00c2u",
+      "event_list_disp_name": "UEFA Champions League",
+      "major_category": "SQUAD_CHALLENGE",
+      "is_vs_user": "NO",
+      "is_custom_team": "YES",
+      "event_start_time": 1700000000,
+      "event_end_time": 1999999999,
+      "event_panel_open_time": 0,
+      "event_panel_close_time": 0,
+      "match_entry": [],
+      "is_nonsupport": "NO",
+      "description_text": "Gi\u1ea3i v\u00f4 \u0111\u1ecbch c\u00e1c CLB ch\u00e2u \u00c2u. V\u01b0\u1ee3t qua T\u1ee9 k\u1ebft, B\u00e1n k\u1ebft v\u00e0 Chung k\u1ebft tr\u01b0\u1edbc c\u00e1c \u0111\u1ea1i di\u1ec7n h\u00f9ng m\u1ea1nh nh\u1ea5t ch\u00e2u \u00c2u \u0111\u1ec3 ch\u1ea1m tay v\u00e0o chi\u1ebfc C\u00fap C1 danh gi\u00e1!",
+      "rule_detail_text": "",
+      "is_championship_pro": "NO",
+      "is_official_competition": "NO",
+      "esports_mode_kind": "NONE",
+      "is_in_esports_menu": "NO",
+      "link_title_list": [],
+      "link_url_list": [],
+      "achievement_name_list": [
+        "UEFA Champions League"
+      ],
+      "is_local_gamerelay": "NO",
+      "has_ranking": "NO",
+      "fame_id_list": [],
+      "collabo_kind": "COLLABO_KIND_NONE",
+      "campaign_info": [
+        {
+          "campaign_id": 895,
+          "bg_file_name": "campaignBG_030"
+        }
+      ],
+      "main_reward_list": [
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "ITEM",
+              "count": 2,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0,
+              "item_info": {
+                "item_type": "ABILITY_TRAINING_RANDOM",
+                "grade": 0,
+                "effect": 0
+              }
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        }
+      ],
+      "is_billboard": "YES",
+      "has_eula": "NO",
+      "eula_url": "",
+      "eula_url_list": [],
+      "is_set_ball": "NO",
+      "match_env": {
+        "condition_home": "CONDITION_RANDOM",
+        "condition_away": "CONDITION_RANDOM",
+        "cpu_level": "REGULAR",
+        "match_time": 0,
+        "injury": "YES",
+        "ball_type": 0,
+        "exTime": "NO",
+        "pk": "NO",
+        "substitution_times": 3,
+        "substitution": 5,
+        "exSubstitution": "NO",
+        "limitTime": "NOSET",
+        "equalization": "NO",
+        "regulation": "NORMAL",
+        "can_use_mobile_controller": "NO"
+      },
+      "stadium_setting": {
+        "stadium_id": 0,
+        "timezone": "TIME_ZONE_TYPE_NIGHT",
+        "weather": "WEATHER_TYPE_FINE",
+        "season": "SEASON_TYPE_SUMMER",
+        "turf_length": "TURF_LENGTH_NORMAL",
+        "pitch_condition": "PITCH_CONDITION_NORMAL"
+      },
+      "compe_unit_id": 65535,
+      "is_limit_matching_area": "NO",
+      "is_limit_control_style": "NO",
+      "is_vsai_force_no_substitute": "YES",
+      "is_vsai_gameplan_disp": "NO",
+      "is_vsai_custom_team": "NO",
+      "vsai_team_id_for_emblem": 0,
+      "banner_file_name": "/banner/event/090002/05d3b67b4681ff21b2ada74c5e86a886675546eef27a98beda1c0e3c0c08add5",
+      "announce_banner_file_name": "/banner/event/090002/188f949c6760cf6bdcb48569115a6883ae60545fa19d570e6c9b7f7618d5d8ce",
+      "detail_banner_file_name": "",
+      "event_menu_banner_file_name": "/banner/event/090002/590d3f7ae96491ad216a2356899b57d92d3766e7e102d56160589d46f640382c",
+      "text_color_a": {
+        "color_r": 244,
+        "color_g": 255,
+        "color_b": 189
+      },
+      "text_color_b": {
+        "color_r": 255,
+        "color_g": 3,
+        "color_b": 0
+      },
+      "recommend_str": "",
+      "recommend_kind": "NONE",
+      "pt_ranking_start_point": 0,
+      "pt_setting_pattern": "PATTERN_FIX",
+      "pt_theme_bonus": "NONE",
+      "pt_bonus_target_entity_id": [],
+      "pt_reward_list": [],
+      "tour_pvp_sp_rate": 0,
+      "tour_pvp_bonus_list": [],
+      "ch_event_type": "NONE",
+      "ch_mission_info_list": [],
+      "ch_clear_count_limit": 0,
+      "ch_enable_change_cpu_level": "YES",
+      "ch_is_ftue": "NO",
+      "ch_is_challenge_unlocked": "YES",
+      "sp_regulation": {
+        "type": "NORMAL",
+        "value": 0
+      },
+      "smart_control": "ANY",
+      "is_must_cross_platform": "NO",
+      "ranking_event_info": [],
+      "coop_bonus_time_interval": 0,
+      "coop_daily_point_limit_all_list": [],
+      "record_event_info": [],
+      "strike_arena_info": [],
+      "ml_event_reward_info": [],
+      "useable_team_list": [],
+      "useable_compe_list": [],
+      "squad_challenge_event_info": {
+        "match_num": 3,
+        "minimum_cpu_level": "BEGINNER",
+        "reward_list": [
+          {
+            "match_index": 1,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 1,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 100,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 100,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "ITEM",
+                  "count": 2,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0,
+                  "item_info": {
+                    "item_type": "ABILITY_TRAINING_RANDOM",
+                    "grade": 0,
+                    "effect": 0
+                  }
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 100,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          }
+        ]
+      },
+      "collabo_event_info": []
+    },
+    {
+      "event_id": 90003,
+      "event_name": "FIFA World Cup - C\u00fap V\u00f4 \u0110\u1ecbch Th\u1ebf Gi\u1edbi",
+      "event_list_disp_name": "FIFA World Cup",
+      "major_category": "SQUAD_CHALLENGE",
+      "is_vs_user": "NO",
+      "is_custom_team": "YES",
+      "event_start_time": 1700000000,
+      "event_end_time": 1999999999,
+      "event_panel_open_time": 0,
+      "event_panel_close_time": 0,
+      "match_entry": [],
+      "is_nonsupport": "NO",
+      "description_text": "C\u00fap V\u00f4 \u0110\u1ecbch B\u00f3ng \u0110\u00e1 Th\u1ebf Gi\u1edbi! D\u1eabn d\u1eaft \u0111\u1ed9i b\u00f3ng v\u01b0\u1ee3t qua c\u00e1c \u0111\u1ea1i di\u1ec7n h\u00f9ng m\u1ea1nh nh\u1ea5t n\u0103m ch\u00e2u: Brazil, Argentina, Ph\u00e1p, Anh, B\u1ed3 \u0110\u00e0o Nha \u0111\u1ec3 n\u00e2ng cao chi\u1ebfc c\u00fap v\u00e0ng FIFA danh gi\u00e1!",
+      "rule_detail_text": "",
+      "is_championship_pro": "NO",
+      "is_official_competition": "NO",
+      "esports_mode_kind": "NONE",
+      "is_in_esports_menu": "NO",
+      "link_title_list": [],
+      "link_url_list": [],
+      "achievement_name_list": [
+        "FIFA World Cup"
+      ],
+      "is_local_gamerelay": "NO",
+      "has_ranking": "NO",
+      "fame_id_list": [],
+      "collabo_kind": "COLLABO_KIND_NONE",
+      "campaign_info": [
+        {
+          "campaign_id": 895,
+          "bg_file_name": "campaignBG_030"
+        }
+      ],
+      "main_reward_list": [
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "ITEM",
+              "count": 2,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0,
+              "item_info": {
+                "item_type": "ABILITY_TRAINING_RANDOM",
+                "grade": 0,
+                "effect": 0
+              }
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        }
+      ],
+      "is_billboard": "YES",
+      "has_eula": "NO",
+      "eula_url": "",
+      "eula_url_list": [],
+      "is_set_ball": "NO",
+      "match_env": {
+        "condition_home": "CONDITION_RANDOM",
+        "condition_away": "CONDITION_RANDOM",
+        "cpu_level": "REGULAR",
+        "match_time": 0,
+        "injury": "YES",
+        "ball_type": 0,
+        "exTime": "NO",
+        "pk": "NO",
+        "substitution_times": 3,
+        "substitution": 5,
+        "exSubstitution": "NO",
+        "limitTime": "NOSET",
+        "equalization": "NO",
+        "regulation": "NORMAL",
+        "can_use_mobile_controller": "NO"
+      },
+      "stadium_setting": {
+        "stadium_id": 0,
+        "timezone": "TIME_ZONE_TYPE_NIGHT",
+        "weather": "WEATHER_TYPE_FINE",
+        "season": "SEASON_TYPE_SUMMER",
+        "turf_length": "TURF_LENGTH_NORMAL",
+        "pitch_condition": "PITCH_CONDITION_NORMAL"
+      },
+      "compe_unit_id": 65535,
+      "is_limit_matching_area": "NO",
+      "is_limit_control_style": "NO",
+      "is_vsai_force_no_substitute": "YES",
+      "is_vsai_gameplan_disp": "NO",
+      "is_vsai_custom_team": "NO",
+      "vsai_team_id_for_emblem": 0,
+      "banner_file_name": "/banner/event/090003/26413f9e5d01b07342d1218f6fd83469417fc65a712988791c89555459e5c961",
+      "announce_banner_file_name": "/banner/event/090003/7d3584616ad403b185699c422d2861b20eacf6053de03421777f4221f57e6f8b",
+      "detail_banner_file_name": "",
+      "event_menu_banner_file_name": "/banner/event/090003/285777dcf7f1b1cec9db489b29b45bb542e6a410243fc04ce36598df37d027eb",
+      "text_color_a": {
+        "color_r": 255,
+        "color_g": 223,
+        "color_b": 0
+      },
+      "text_color_b": {
+        "color_r": 0,
+        "color_g": 102,
+        "color_b": 204
+      },
+      "recommend_str": "",
+      "recommend_kind": "NONE",
+      "pt_ranking_start_point": 0,
+      "pt_setting_pattern": "PATTERN_FIX",
+      "pt_theme_bonus": "NONE",
+      "pt_bonus_target_entity_id": [],
+      "pt_reward_list": [],
+      "tour_pvp_sp_rate": 0,
+      "tour_pvp_bonus_list": [],
+      "ch_event_type": "NONE",
+      "ch_mission_info_list": [],
+      "ch_clear_count_limit": 0,
+      "ch_enable_change_cpu_level": "YES",
+      "ch_is_ftue": "NO",
+      "ch_is_challenge_unlocked": "YES",
+      "sp_regulation": {
+        "type": "NORMAL",
+        "value": 0
+      },
+      "smart_control": "ANY",
+      "is_must_cross_platform": "NO",
+      "ranking_event_info": [],
+      "coop_bonus_time_interval": 0,
+      "coop_daily_point_limit_all_list": [],
+      "record_event_info": [],
+      "strike_arena_info": [],
+      "ml_event_reward_info": [],
+      "useable_team_list": [],
+      "useable_compe_list": [],
+      "squad_challenge_event_info": {
+        "match_num": 4,
+        "minimum_cpu_level": "BEGINNER",
+        "reward_list": [
+          {
+            "match_index": 1,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 1,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 50,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 4,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "ITEM",
+                  "count": 2,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0,
+                  "item_info": {
+                    "item_type": "EXTEND_PLAYER",
+                    "grade": 0,
+                    "effect": 0
+                  }
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 4,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          }
+        ]
+      },
+      "collabo_event_info": []
+    },
+    {
+      "event_id": 90004,
+      "event_name": "Legend All-Stars Challenge - Th\u00e1ch \u0110\u1ea5u Huy\u1ec1n Tho\u1ea1i",
+      "event_list_disp_name": "Legend All-Stars",
+      "major_category": "SQUAD_CHALLENGE",
+      "is_vs_user": "NO",
+      "is_custom_team": "YES",
+      "event_start_time": 1700000000,
+      "event_end_time": 1999999999,
+      "event_panel_open_time": 0,
+      "event_panel_close_time": 0,
+      "match_entry": [],
+      "is_nonsupport": "NO",
+      "description_text": "Th\u00e1ch \u0111\u1ea5u Dream Team c\u00e1c si\u00eau sao huy\u1ec1n tho\u1ea1i v\u0129 \u0111\u1ea1i nh\u1ea5t l\u1ecbch s\u1eed b\u00f3ng \u0111\u00e1 th\u1ebf gi\u1edbi: Cruyff, Gullit, Ronaldinho, Maldini, Romario, Vieira, Pirlo, Casillas...",
+      "rule_detail_text": "",
+      "is_championship_pro": "NO",
+      "is_official_competition": "NO",
+      "esports_mode_kind": "NONE",
+      "is_in_esports_menu": "NO",
+      "link_title_list": [],
+      "link_url_list": [],
+      "achievement_name_list": [
+        "Legend All-Stars"
+      ],
+      "is_local_gamerelay": "NO",
+      "has_ranking": "NO",
+      "fame_id_list": [],
+      "collabo_kind": "COLLABO_KIND_NONE",
+      "campaign_info": [
+        {
+          "campaign_id": 895,
+          "bg_file_name": "campaignBG_030"
+        }
+      ],
+      "main_reward_list": [
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "ITEM",
+              "count": 2,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0,
+              "item_info": {
+                "item_type": "ABILITY_TRAINING_RANDOM",
+                "grade": 0,
+                "effect": 0
+              }
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        }
+      ],
+      "is_billboard": "YES",
+      "has_eula": "NO",
+      "eula_url": "",
+      "eula_url_list": [],
+      "is_set_ball": "NO",
+      "match_env": {
+        "condition_home": "CONDITION_RANDOM",
+        "condition_away": "CONDITION_RANDOM",
+        "cpu_level": "REGULAR",
+        "match_time": 0,
+        "injury": "YES",
+        "ball_type": 0,
+        "exTime": "NO",
+        "pk": "NO",
+        "substitution_times": 3,
+        "substitution": 5,
+        "exSubstitution": "NO",
+        "limitTime": "NOSET",
+        "equalization": "NO",
+        "regulation": "NORMAL",
+        "can_use_mobile_controller": "NO"
+      },
+      "stadium_setting": {
+        "stadium_id": 0,
+        "timezone": "TIME_ZONE_TYPE_NIGHT",
+        "weather": "WEATHER_TYPE_FINE",
+        "season": "SEASON_TYPE_SUMMER",
+        "turf_length": "TURF_LENGTH_NORMAL",
+        "pitch_condition": "PITCH_CONDITION_NORMAL"
+      },
+      "compe_unit_id": 65535,
+      "is_limit_matching_area": "NO",
+      "is_limit_control_style": "NO",
+      "is_vsai_force_no_substitute": "YES",
+      "is_vsai_gameplan_disp": "NO",
+      "is_vsai_custom_team": "NO",
+      "vsai_team_id_for_emblem": 0,
+      "banner_file_name": "/banner/event/090004/6dbc267eb91351a14c94ec801eb70b5089095674bfe62d63097de157d633f353",
+      "announce_banner_file_name": "/banner/event/090004/8cf8919e7428892c17458f49442e3b8c5dfd09070ab342334047691572a6270a",
+      "detail_banner_file_name": "",
+      "event_menu_banner_file_name": "/banner/event/090004/b66d8c79c22ec135792f0dfd81ae6a0af43fe007b337d9611ab53b4a3299143c",
+      "text_color_a": {
+        "color_r": 255,
+        "color_g": 215,
+        "color_b": 0
+      },
+      "text_color_b": {
+        "color_r": 0,
+        "color_g": 230,
+        "color_b": 230
+      },
+      "recommend_str": "",
+      "recommend_kind": "NONE",
+      "pt_ranking_start_point": 0,
+      "pt_setting_pattern": "PATTERN_FIX",
+      "pt_theme_bonus": "NONE",
+      "pt_bonus_target_entity_id": [],
+      "pt_reward_list": [],
+      "tour_pvp_sp_rate": 0,
+      "tour_pvp_bonus_list": [],
+      "ch_event_type": "NONE",
+      "ch_mission_info_list": [],
+      "ch_clear_count_limit": 0,
+      "ch_enable_change_cpu_level": "YES",
+      "ch_is_ftue": "NO",
+      "ch_is_challenge_unlocked": "YES",
+      "sp_regulation": {
+        "type": "NORMAL",
+        "value": 0
+      },
+      "smart_control": "ANY",
+      "is_must_cross_platform": "NO",
+      "ranking_event_info": [],
+      "coop_bonus_time_interval": 0,
+      "coop_daily_point_limit_all_list": [],
+      "record_event_info": [],
+      "strike_arena_info": [],
+      "ml_event_reward_info": [],
+      "useable_team_list": [],
+      "useable_compe_list": [],
+      "squad_challenge_event_info": {
+        "match_num": 3,
+        "minimum_cpu_level": "BEGINNER",
+        "reward_list": [
+          {
+            "match_index": 1,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 1,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "ITEM",
+                  "count": 3,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0,
+                  "item_info": {
+                    "item_type": "SKILL_TRAINING_SELECT",
+                    "grade": 0,
+                    "effect": 0
+                  }
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          }
+        ]
+      },
+      "collabo_event_info": []
+    },
+    {
+      "event_id": 90005,
+      "event_name": "European Super Derbies - Si\u00eau Kinh \u0110i\u1ec3n El Cl\u00e1sico",
+      "event_list_disp_name": "El Cl\u00e1sico Derbies",
+      "major_category": "SQUAD_CHALLENGE",
+      "is_vs_user": "NO",
+      "is_custom_team": "YES",
+      "event_start_time": 1700000000,
+      "event_end_time": 1999999999,
+      "event_panel_open_time": 0,
+      "event_panel_close_time": 0,
+      "match_entry": [],
+      "is_nonsupport": "NO",
+      "description_text": "\u0110\u1ea1i chi\u1ebfn c\u00e1c tr\u1eadn Derby r\u1ef1c l\u1eeda nh\u1ea5t tr\u1eddi \u00c2u: El Cl\u00e1sico (Real Madrid vs Barcelona), Manchester Derby (Man City vs Man United), Derby della Madonnina (Milan vs Inter)!",
+      "rule_detail_text": "",
+      "is_championship_pro": "NO",
+      "is_official_competition": "NO",
+      "esports_mode_kind": "NONE",
+      "is_in_esports_menu": "NO",
+      "link_title_list": [],
+      "link_url_list": [],
+      "achievement_name_list": [
+        "El Cl\u00e1sico Derbies"
+      ],
+      "is_local_gamerelay": "NO",
+      "has_ranking": "NO",
+      "fame_id_list": [],
+      "collabo_kind": "COLLABO_KIND_NONE",
+      "campaign_info": [
+        {
+          "campaign_id": 895,
+          "bg_file_name": "campaignBG_030"
+        }
+      ],
+      "main_reward_list": [
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "ITEM",
+              "count": 2,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0,
+              "item_info": {
+                "item_type": "ABILITY_TRAINING_RANDOM",
+                "grade": 0,
+                "effect": 0
+              }
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        },
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 25,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        }
+      ],
+      "is_billboard": "YES",
+      "has_eula": "NO",
+      "eula_url": "",
+      "eula_url_list": [],
+      "is_set_ball": "NO",
+      "match_env": {
+        "condition_home": "CONDITION_RANDOM",
+        "condition_away": "CONDITION_RANDOM",
+        "cpu_level": "REGULAR",
+        "match_time": 0,
+        "injury": "YES",
+        "ball_type": 0,
+        "exTime": "NO",
+        "pk": "NO",
+        "substitution_times": 3,
+        "substitution": 5,
+        "exSubstitution": "NO",
+        "limitTime": "NOSET",
+        "equalization": "NO",
+        "regulation": "NORMAL",
+        "can_use_mobile_controller": "NO"
+      },
+      "stadium_setting": {
+        "stadium_id": 0,
+        "timezone": "TIME_ZONE_TYPE_NIGHT",
+        "weather": "WEATHER_TYPE_FINE",
+        "season": "SEASON_TYPE_SUMMER",
+        "turf_length": "TURF_LENGTH_NORMAL",
+        "pitch_condition": "PITCH_CONDITION_NORMAL"
+      },
+      "compe_unit_id": 65535,
+      "is_limit_matching_area": "NO",
+      "is_limit_control_style": "NO",
+      "is_vsai_force_no_substitute": "YES",
+      "is_vsai_gameplan_disp": "NO",
+      "is_vsai_custom_team": "NO",
+      "vsai_team_id_for_emblem": 0,
+      "banner_file_name": "/banner/event/090005/d212ea6bbf9ef7aedc74da96aa7d709fb115190b89c33223060d776c1387224e",
+      "announce_banner_file_name": "/banner/event/090005/5124a9d0965ab30aa3b55e6e8dd274fbbc534d49185f10e636b23cca304fdc33",
+      "detail_banner_file_name": "",
+      "event_menu_banner_file_name": "/banner/event/090005/c5f0ef42ab3559df093fbfb36441eb4383676c128081394f58d73a9e035fc404",
+      "text_color_a": {
+        "color_r": 255,
+        "color_g": 69,
+        "color_b": 0
+      },
+      "text_color_b": {
+        "color_r": 30,
+        "color_g": 144,
+        "color_b": 255
+      },
+      "recommend_str": "",
+      "recommend_kind": "NONE",
+      "pt_ranking_start_point": 0,
+      "pt_setting_pattern": "PATTERN_FIX",
+      "pt_theme_bonus": "NONE",
+      "pt_bonus_target_entity_id": [],
+      "pt_reward_list": [],
+      "tour_pvp_sp_rate": 0,
+      "tour_pvp_bonus_list": [],
+      "ch_event_type": "NONE",
+      "ch_mission_info_list": [],
+      "ch_clear_count_limit": 0,
+      "ch_enable_change_cpu_level": "YES",
+      "ch_is_ftue": "NO",
+      "ch_is_challenge_unlocked": "YES",
+      "sp_regulation": {
+        "type": "NORMAL",
+        "value": 0
+      },
+      "smart_control": "ANY",
+      "is_must_cross_platform": "NO",
+      "ranking_event_info": [],
+      "coop_bonus_time_interval": 0,
+      "coop_daily_point_limit_all_list": [],
+      "record_event_info": [],
+      "strike_arena_info": [],
+      "ml_event_reward_info": [],
+      "useable_team_list": [],
+      "useable_compe_list": [],
+      "squad_challenge_event_info": {
+        "match_num": 3,
+        "minimum_cpu_level": "BEGINNER",
+        "reward_list": [
+          {
+            "match_index": 1,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 1,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 25,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 2,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "ITEM",
+                  "count": 2,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0,
+                  "item_info": {
+                    "item_type": "POSITION_TRAINING_SELECT",
+                    "grade": 0,
+                    "effect": 0
+                  }
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          },
+          {
+            "match_index": 3,
+            "is_main": "NO",
+            "is_repeat": "YES",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "GP",
+                  "count": 500,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          }
+        ]
+      },
+      "collabo_event_info": []
+    },
+    {
+      "event_id": 100004,
+      "event_name": "My League Sprint - \u0110ua T\u1ed1c \u0110\u1ed9 & Th\u1eed Th\u00e1ch",
+      "event_list_disp_name": "My League Sprint",
+      "major_category": "SQUAD_CHALLENGE",
+      "is_vs_user": "NO",
+      "is_custom_team": "YES",
+      "event_start_time": 1700000000,
+      "event_end_time": 1999999999,
+      "event_panel_open_time": 0,
+      "event_panel_close_time": 0,
+      "match_entry": [],
+      "is_nonsupport": "NO",
+      "description_text": "Th\u1eed th\u00e1ch My League Sprint! V\u01b0\u1ee3t qua c\u00e1c ch\u1eb7ng \u0111ua t\u1ed1c \u0111\u1ed9 \u0111\u1ec9nh cao, t\u00edch l\u0169y \u0111i\u1ec3m th\u01b0\u1edfng v\u00e0 nh\u1eadn qu\u00e0 \u0111\u1ed9c quy\u1ec1n cho \u0111\u1ed9i b\u00f3ng!",
+      "rule_detail_text": "",
+      "is_championship_pro": "NO",
+      "is_official_competition": "NO",
+      "esports_mode_kind": "NONE",
+      "is_in_esports_menu": "NO",
+      "link_title_list": [],
+      "link_url_list": [],
+      "achievement_name_list": [
+        "My League Sprint"
+      ],
+      "is_local_gamerelay": "NO",
+      "has_ranking": "NO",
+      "fame_id_list": [],
+      "collabo_kind": "COLLABO_KIND_NONE",
+      "campaign_info": [
+        {
+          "campaign_id": 895,
+          "bg_file_name": "campaignBG_030"
+        }
+      ],
+      "main_reward_list": [
+        {
+          "reward_count": 1,
+          "event_reward_list": [
+            {
+              "present_id": 0,
+              "present_type": "COIN",
+              "count": 50,
+              "name": "NotImplement",
+              "title": "NotImplement",
+              "reason": "SQUAD_CHALLENGE_EVENT",
+              "reason_num": 0,
+              "random_reward_rate": 0
+            }
+          ],
+          "rank_from": 0,
+          "rank_to": 0,
+          "panel_mission_progress_info": []
+        }
+      ],
+      "is_billboard": "YES",
+      "has_eula": "NO",
+      "eula_url": "",
+      "eula_url_list": [],
+      "is_set_ball": "NO",
+      "match_env": {
+        "condition_home": "CONDITION_RANDOM",
+        "condition_away": "CONDITION_RANDOM",
+        "cpu_level": "REGULAR",
+        "match_time": 0,
+        "injury": "YES",
+        "ball_type": 0,
+        "exTime": "NO",
+        "pk": "NO",
+        "substitution_times": 3,
+        "substitution": 5,
+        "exSubstitution": "NO",
+        "limitTime": "NOSET",
+        "equalization": "NO",
+        "regulation": "NORMAL",
+        "can_use_mobile_controller": "NO"
+      },
+      "stadium_setting": {
+        "stadium_id": 0,
+        "timezone": "TIME_ZONE_TYPE_NIGHT",
+        "weather": "WEATHER_TYPE_FINE",
+        "season": "SEASON_TYPE_SUMMER",
+        "turf_length": "TURF_LENGTH_NORMAL",
+        "pitch_condition": "PITCH_CONDITION_NORMAL"
+      },
+      "compe_unit_id": 65535,
+      "is_limit_matching_area": "NO",
+      "is_limit_control_style": "NO",
+      "is_vsai_force_no_substitute": "YES",
+      "is_vsai_gameplan_disp": "NO",
+      "is_vsai_custom_team": "NO",
+      "vsai_team_id_for_emblem": 0,
+      "banner_file_name": "/banner/event/100004/89c1529a6c9a55511a98ad1a5560509983e6a030c3697741d73a9df30646979a",
+      "announce_banner_file_name": "/banner/event/100004/89c1529a6c9a55511a98ad1a5560509983e6a030c3697741d73a9df30646979a",
+      "detail_banner_file_name": "",
+      "event_menu_banner_file_name": "/banner/event/100004/89c1529a6c9a55511a98ad1a5560509983e6a030c3697741d73a9df30646979a",
+      "text_color_a": {
+        "color_r": 244,
+        "color_g": 255,
+        "color_b": 189
+      },
+      "text_color_b": {
+        "color_r": 255,
+        "color_g": 3,
+        "color_b": 0
+      },
+      "recommend_str": "",
+      "recommend_kind": "NONE",
+      "pt_ranking_start_point": 0,
+      "pt_setting_pattern": "PATTERN_FIX",
+      "pt_theme_bonus": "NONE",
+      "pt_bonus_target_entity_id": [],
+      "pt_reward_list": [],
+      "tour_pvp_sp_rate": 0,
+      "bonus_player_entity_id_list": [],
+      "tour_setting": {
+        "is_daily": "NO",
+        "stage_list": []
+      },
+      "challenge_setting": {
+        "is_clear_level": "NO",
+        "start_match_level": "LEVEL_1",
+        "ch_enable_change_cpu_level": "YES",
+        "minimum_cpu_level": "BEGINNER",
+        "stage_list": [
+          {
+            "match_index": 1,
+            "is_main": "YES",
+            "is_repeat": "NO",
+            "reward": {
+              "reward_count": 1,
+              "event_reward_list": [
+                {
+                  "present_id": 0,
+                  "present_type": "COIN",
+                  "count": 50,
+                  "name": "NotImplement",
+                  "title": "NotImplement",
+                  "reason": "SQUAD_CHALLENGE_EVENT",
+                  "reason_num": 0,
+                  "random_reward_rate": 0
+                }
+              ],
+              "rank_from": 0,
+              "rank_to": 0,
+              "panel_mission_progress_info": []
+            }
+          }
+        ]
+      },
+      "collabo_event_info": []
+    }
+  ],
+  "event_num": 5,
+  "sp_rate_list": [
+    {
+      "player_num": 0,
+      "rate": 100000
+    },
+    {
+      "player_num": 1,
+      "rate": 110000
+    },
+    {
+      "player_num": 2,
+      "rate": 120000
+    },
+    {
+      "player_num": 3,
+      "rate": 130000
+    },
+    {
+      "player_num": 4,
+      "rate": 140000
+    },
+    {
+      "player_num": 5,
+      "rate": 150000
+    },
+    {
+      "player_num": 6,
+      "rate": 160000
+    },
+    {
+      "player_num": 7,
+      "rate": 170000
+    },
+    {
+      "player_num": 8,
+      "rate": 180000
+    },
+    {
+      "player_num": 9,
+      "rate": 190000
+    },
+    {
+      "player_num": 10,
+      "rate": 200000
+    },
+    {
+      "player_num": 11,
+      "rate": 210000
+    },
+    {
+      "player_num": 12,
+      "rate": 220000
+    },
+    {
+      "player_num": 13,
+      "rate": 230000
+    },
+    {
+      "player_num": 14,
+      "rate": 240000
+    },
+    {
+      "player_num": 15,
+      "rate": 250000
+    },
+    {
+      "player_num": 16,
+      "rate": 260000
+    },
+    {
+      "player_num": 17,
+      "rate": 270000
+    },
+    {
+      "player_num": 18,
+      "rate": 280000
+    },
+    {
+      "player_num": 19,
+      "rate": 290000
+    },
+    {
+      "player_num": 20,
+      "rate": 300000
+    },
+    {
+      "player_num": 21,
+      "rate": 310000
+    },
+    {
+      "player_num": 22,
+      "rate": 320000
+    },
+    {
+      "player_num": 23,
+      "rate": 330000
+    }
+  ],
+  "cpu_level_rate_list": [
+    100000,
+    110000,
+    120000,
+    135000,
+    155000,
+    180000,
+    205000
+  ],
+  "result_rate_list": [
+    120,
+    180,
+    300
+  ],
+  "default_member": [
+    8440914,
+    8440955,
+    8440987,
+    8441052,
+    8442089,
+    8442092,
+    8442096,
+    8442097,
+    8442103,
+    8442123,
+    8443209,
+    8446097,
+    8446150,
+    8446166,
+    8446214,
+    8446311,
+    8446364,
+    8446372,
+    8446409,
+    8446483,
+    8446495,
+    8446665,
+    8446885
+  ],
+  "event_recommend_kind": "NONE",
+  "event_recommend_str": "",
+  "event_recommend_info_type": "BOTH",
+  "result": "NOERR",
+  "rqid": 1348407500,
+  "msgid": "CMD_GET_EVENT_LIST_AND_LOG"
+}

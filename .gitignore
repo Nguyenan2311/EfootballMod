@@ -1,0 +1,12 @@
+build/
+__pycache__/
+*.ipa
+*.zip
+/out/
+/online/logs/
+/online/server.env
+/online/client.json
+*.log
+.hash-cache.json
+build-report.json
+

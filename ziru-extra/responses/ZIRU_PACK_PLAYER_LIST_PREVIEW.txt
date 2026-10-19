@@ -1,0 +1,203 @@
+1368 | ZIRU LEGENDS: FOOTBALL ROYALTY | 145 players
+  87963077709801 | Andrés Iniesta | CMF | age 26
+  87963614580713 | Andrés Iniesta | CMF | age 24
+  88036360589289 | Andrés Iniesta | CMF | age 26
+  88040387117922 | Xavi | CMF | age 28
+  88033139363817 | Andrés Iniesta | CMF | age 25
+  88032334188031 | Deco | CMF | age 29
+  87963614577506 | Xavi | CMF | age 30
+  88040387251711 | Deco | CMF | age 29
+  88032065618786 | Xavi | AMF | age 30
+  88040387158182 | Thiago Alcantara | CMF | age 30
+  88032334191325 | Rui Costa | CMF | age 27
+  88031797186537 | Andrés Iniesta | CMF | age 27
+  88029918268927 | Deco | CMF | age 29
+  88045755863174 | Eden Hazard | LWF | age 25
+  88040387126185 | Franck Ribéry | LMF | age 29
+
+6001 | ZIRU LEGENDS: MASTER CREATORS | 145 players
+  88039045074354 | Paul Scholes | CMF | age 24
+  88035018410719 | Michel Platini | AMF | age 29
+  88032065755869 | Rui Costa | AMF | age 31
+  88035555283766 | Wesley Sneijder | AMF | age 26
+  88044145214363 | Edgar Davids | DMF | age 25
+  88040655554414 | Gianfranco Zola | SS | age 31
+  88033407929797 | Pavel Nedvěd | AMF | age 31
+  88029918268910 | Zico | AMF | age 29
+  88035555413486 | Zico | AMF | age 29
+  88040387117286 | Dragan Stojković | AMF | age 33
+  88036092284396 | Franz Beckenbauer | DMF | age 29
+  88029918272221 | Rui Costa | AMF | age 32
+  88030455005347 | Nakamura Shunsuke | CMF | age 43
+  87963883146674 | Paul Scholes | CMF | age 25
+  88036092150683 | Edgar Davids | DMF | age 30
+
+6002 | ZIRU LEGENDS: ELITE FINISHERS | 145 players
+  88029649701165 | Hristo Stoichkov | CF | age 28
+  88033139362093 | Hristo Stoichkov | CF | age 28
+  88036360719863 | Diego Forlán | CF | age 32
+  88038776539586 | Alexandre Pato | CF | age 19
+  88044145348036 | Filippo Inzaghi | CF | age 33
+  88041460860895 | Roy Makaay | CF | age 29
+  88039044943928 | Wayne Rooney | SS | age 26
+  88029918174624 | Neymar Jr | CF | age 19
+  88044682118054 | Sergio Agüero | CF | age 30
+  88037166026249 | Adriano | CF | age 25
+  88040387120768 | Carlos Tévez | CF | age 23
+  87963883146723 | Javier Saviola | CF | age 21
+  88036360588001 | Eric Cantona | CF | age 29
+  88033407796182 | Christian Vieri | CF | age 30
+  88033407929796 | Filippo Inzaghi | CF | age 25
+
+6003 | ZIRU LEGENDS: DEFENSIVE IMMORTALS | 145 players
+  88033407929841 | Franco Baresi | CB | age 34
+  88033407929794 | Paolo Maldini | LB | age 24
+  88033139360727 | Gianluigi Buffon | GK | age 39
+  88030723578594 | Claude Makélélé | DMF | age 33
+  88035823830185 | Alessandro Nesta | CB | age 24
+  88033407796052 | Iker Casillas | GK | age 19
+  87962272515241 | Alessandro Nesta | CB | age 26
+  88033407933157 | Fabio Cannavaro | CB | age 34
+  88040387150135 | Leonardo Bonucci | CB | age 34
+  88038776638902 | Sergi Barjuan | LB | age 26
+  88036360719801 | Carles Puyol | CB | age 32
+  88036360701097 | Alessandro Nesta | CB | age 26
+  88029649833457 | Franco Baresi | CB | age 34
+  88045755964131 | Jaap Stam | CB | age 26
+  88035823852263 | Peter Schmeichel | GK | age 30
+
+6004 | ZIRU LEGENDS: WING LEGENDS | 145 players
+  88029649833393 | David Beckham | RMF | age 24
+  88039581810740 | Ono Shinji | AMF | age 27
+  88032602496343 | Lionel Messi | RWF | age 19
+  88033407796838 | Zé Roberto | LMF | age 29
+  88036360719824 | Ronaldinho Gaúcho | LWF | age 25
+  88036360631451 | Lorenzo Insigne | LWF | age 28
+  88029649700454 | Zé Roberto | LMF | age 29
+  88035555413425 | David Beckham | CMF | age 29
+  88030455139768 | Gaizka Mendieta | RMF | age 29
+  88034750107127 | Diego Forlán | CF | age 31
+  88033407929847 | Diego Forlán | CF | age 31
+  88041460874200 | Kagawa Shinji | LMF | age 25
+  87960930356735 | Deco | AMF | age 28
+  88040387251674 | Dennis Bergkamp | AMF | age 23
+  88033139400096 | Neymar Jr | LWF | age 23
+
+6005 | ZIRU LEGENDS: ICONIC HEROES | 145 players
+  87963614591960 | Kagawa Shinji | AMF | age 23
+  88040387251694 | Zico | AMF | age 40
+  88033407933162 | Andriy Shevchenko | CF | age 28
+  88031797189908 | David Villa | CF | age 25
+  88045755960771 | Francesco Totti | CF | age 30
+  88035555279011 | Nakamura Shunsuke | AMF | age 26
+  88035823848941 | K. Heinz Rummenigge | CF | age 25
+  88033407796938 | Juan Sebastián Verón | CMF | age 25
+  88039044955096 | Kagawa Shinji | AMF | age 23
+  88035823848926 | Rafael van der Vaart | CMF | age 27
+  88044145348046 | Rivaldo | AMF | age 30
+  88042803076483 | P. E. Aubameyang | CF | age 27
+  88042534641027 | P. E. Aubameyang | CF | age 27
+  88044145351392 | Lilian Thuram | RB | age 26
+  88036360587367 | A. Costacurta | RB | age 22
+
+1348 | ZIRU BIG TIME: TIMELESS MOMENTS | 149 players
+  89138288136169 | Andrés Iniesta | LMF | age 26
+  89136409091415 | Lionel Messi | RWF | age 19
+  89138556678270 | Kylian Mbappé | CF | age 27
+  89135067039781 | Pedri | CMF | age 22
+  89138556575063 | Lionel Messi | SS | age 39
+  89129429769559 | Lionel Messi | RWF | age 27
+  89133456301399 | Lionel Messi | RWF | age 27
+  89136677522134 | George Best | RWF | age 22
+  89133724764840 | Gareth Bale | RWF | age 28
+  89132382653161 | Hakan Çalhanoğlu | CMF | age 27
+  89067958050135 | Lionel Messi | RWF | age 35
+  89132651035231 | Anthony Martial | CF | age 19
+  89129698205015 | Lionel Messi | CF | age 35
+  89066347431386 | Samuel Eto'o | CF | age 28
+  89062052470103 | Lionel Messi | AMF | age 26
+
+1374 | ZIRU SHOW TIME: PRIME STARS | 132 players
+  106726447777829 | Pedri | CMF | age 24
+  106653433246643 | Marco Verratti | CMF | age 34
+  106765907789861 | Pedri | CMF | age 24
+  106777181979954 | Luka Modrić | CMF | age 41
+  106726447748898 | Bernardo Silva | RMF | age 32
+  106788187833650 | Luka Modrić | CMF | age 41
+  106653970182270 | Kylian Mbappé | CF | age 28
+  106777987362942 | Kylian Mbappé | CF | age 28
+  89136409091415 | Lionel Messi | RWF | age 19
+  106655043916780 | Martin Ødegaard | AMF | age 28
+  106773692401975 | Vinícius Júnior | LWF | age 26
+  106755438714272 | Neymar Jr | AMF | age 34
+  106655312282930 | Luka Modrić | CMF | age 41
+  106743627624574 | Kylian Mbappé | CF | age 28
+  106764028719230 | Kylian Mbappé | CF | age 28
+
+6201 | ZIRU SHOW TIME: GAME CHANGERS | 132 players
+  106729132046411 | Paulo Dybala | AMF | age 33
+  106782013903764 | Leandro Trossard | LMF | age 32
+  106731547978577 | Rodrigo De Paul | RMF | age 32
+  106747922604897 | Orkun Kökçü | CMF | age 26
+  106788187841133 | James Rodríguez | RWF | age 35
+  106743090769804 | Mitoma Kaoru | LWF | age 29
+  106757317825013 | Leroy Sané | RWF | age 30
+  106773960831286 | Dani Olmo | AMF | age 28
+  106741211713905 | Rafael Leão | LMF | age 27
+  106766444664616 | Xavi Simons | AMF | age 23
+  106774497720318 | Marcos Antônio | CMF | age 26
+  106763223432463 | Dominik Szoboszlai | AMF | age 26
+  106771008054113 | Orkun Kökçü | AMF | age 26
+  106765186342826 | Alex Iwobi | AMF | age 30
+  106757317845857 | Orkun Kökçü | CMF | age 26
+
+6202 | ZIRU SHOW TIME: ELITE FINISHERS | 132 players
+  106742553882816 | Jules Koundé | RB | age 28
+  106654238640551 | Erling Haaland | CF | age 26
+  106729400568231 | Erling Haaland | CF | age 26
+  106781208610214 | Gabriel Martinelli | LWF | age 25
+  106652628027815 | Erling Haaland | CF | age 26
+  106781745470620 | Cody Gakpo | LWF | age 27
+  106780940151245 | Joshua Kimmich | DMF | age 31
+  106782013927260 | Moisés Caicedo | DMF | age 25
+  106781477040769 | Felix Nmecha | DMF | age 26
+  106733158578359 | Harry Kane | CF | age 33
+  106766981509166 | Marcus Rashford | LWF | age 29
+  106783087658867 | Ueda Ayase | CF | age 28
+  106781745353130 | Cristiano Ronaldo | CF | age 41
+  106759733774894 | Riccardo Calafiori | LB | age 24
+  106768592119926 | Frenkie de Jong | DMF | age 29
+
+6203 | ZIRU SHOW TIME: DEFENSIVE WALL | 131 players
+  106777987393262 | Joan García | GK | age 25
+  106723780168662 | N'Golo Kanté | DMF | age 35
+  106741748591999 | Gedson Fernandes | CMF | age 27
+  106732621770975 | Rodri | DMF | age 30
+  106761092659319 | Fabinho | DMF | age 33
+  106787651045215 | Marc Cucurella | LB | age 28
+  106772887111104 | Ronald Araújo | CB | age 27
+  106752217464922 | Endo Wataru | DMF | age 33
+  106725105593727 | Gedson Fernandes | CMF | age 27
+  106763491864289 | William Saliba | CB | age 25
+  106759196878583 | Gianluigi Donnarumma | GK | age 27
+  106736916728790 | N'Golo Kanté | DMF | age 35
+  106758928449823 | Ibrahima Konaté | CB | age 27
+  106745506608041 | Marquinhos | CB | age 32
+  106763760292838 | Aurélien Tchouaméni | DMF | age 26
+
+6204 | ZIRU SHOW TIME: RISING STARS | 131 players
+  106745506689835 | João Pedro | CF | age 25
+  106759465371456 | Pau Cubarsí | CB | age 19
+  106782550787909 | Jude Bellingham | AMF | age 23
+  106744164492837 | Marcus Thuram | CF | age 29
+  106756780978095 | Victor Osimhen | CF | age 28
+  106745238253510 | Viktor Gyökeres | CF | age 28
+  106735037705888 | Julián Alvarez | CF | age 26
+  106752217570149 | Maeda Daizen | LWF | age 29
+  106754365099263 | Estêvão | RWF | age 19
+  106757854755138 | Lamine Yamal | RWF | age 19
+  106750070073457 | Lautaro Martínez | CF | age 29
+  106776645188904 | Achraf Hakimi | RB | age 28
+  106778792723485 | Kenan Yıldız | LMF | age 21
+  106787919411383 | Harry Kane | CF | age 33
+  106732084947988 | Kobbie Mainoo | CMF | age 21

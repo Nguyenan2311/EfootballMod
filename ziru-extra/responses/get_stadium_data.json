@@ -1,0 +1,91 @@
+{
+  "result": "NOERR",
+  "msgid": "CMD_GET_STADIUM_DATA",
+  "rqid": 1,
+  "data_list": [
+    {
+      "name": "pc3002_mobile_ios.pak",
+      "size": 365,
+      "hash": "b372aca3413c2d69234f5824db8af78cb367ca0fdee4df624fa32978bf1ace43",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3002_mobile_ios.ucas",
+      "size": 265236240,
+      "hash": "17692d16a12593ece3f1731b108b5b6ff6724e548dac4a8bb2a69c662fcd394d",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3002_mobile_ios.utoc",
+      "size": 433519,
+      "hash": "18a8e47bedce4432caabe605d76f0daea58174dbd6f65330236ad3869fab7976",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3012_mobile_ios.pak",
+      "size": 365,
+      "hash": "70b014d170e45373acf526c1ca411ad57586ed9de54d961751cac1b286961c75",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3012_mobile_ios.ucas",
+      "size": 337073200,
+      "hash": "ee0d8036003bcafef1cc33d62d94b40cd25a6792695f1c8f418119f05ed1bb55",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3012_mobile_ios.utoc",
+      "size": 358860,
+      "hash": "abfe6d236970e7bfdeebc52d05d27cf1252726b6131d1da25e927b2a9b3fb09b",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3002_mobile_and.pak",
+      "size": 365,
+      "hash": "309b85b66d43ffacc84a089f2d126df9d562235ace135f93f71788cbee5c0435",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3002_mobile_and.ucas",
+      "size": 256385664,
+      "hash": "c49cc0d71a5742e9115ab3fbaa0ecca7bb84b97a18880e1ce666f95ba9613f2d",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3002_mobile_and.utoc",
+      "size": 452371,
+      "hash": "f0e8075357b615df925a000fab6d31742bab30a69c3cf882277035229a6009c4",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3012_mobile_and.pak",
+      "size": 365,
+      "hash": "69ad7ceeb380b8d7ec8e8a37d0b4dedbf97a2850c91fdaa25a0931d7c59f7d79",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3012_mobile_and.ucas",
+      "size": 315269552,
+      "hash": "a072d59554961e25567de8c0bccc2e07faa9eea798db3deae92155846fe39b32",
+      "version": 2026081300,
+      "changelist_number": 0
+    },
+    {
+      "name": "pc3012_mobile_and.utoc",
+      "size": 372972,
+      "hash": "33f29247895757fd711998c804629104b0ca10b176b77f21047cdb4b094ca4fb",
+      "version": 2026081300,
+      "changelist_number": 0
+    }
+  ]
+}
