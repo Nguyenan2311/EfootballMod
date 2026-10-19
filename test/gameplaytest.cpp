@@ -272,6 +272,9 @@ int main() {
       owned->put("additional_skill_id", newArr());
       owned->remove("original_parameters");  // pack players come from catalog records, which have none
       s.ziruDb->savePlayer(303, 1, owned->toString());
+      // built-in skills come from the card record, not from whatever bits a save carries
+      asset(root, "ZIRU_PLAYER_RECORDS.json", newObj()->put("1", newObj()->put("gameplayer", Object::parse(owned->toString()))));
+      s.ziruPlayerRecordsCache.reset();
       asset(root, "CMD_USE_MYCLUB_ITEM.json", obj(R"({"result":"NOERR"})"));
       auto req = newObj()->put("gameplayer_id_list", newArr()->put(owned->getJSONObject("gameplayer_id")))
           ->put("training_index", 0)->put("item_list", newArr()->put(newObj()->put("present_num", 1)

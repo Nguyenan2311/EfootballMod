@@ -185,6 +185,20 @@ ObjP ziruExactCard(int64_t id) {
   return ziruLoginCardsCache->optJSONObject(str(id));
 }
 
+// Skill bits (parameters[70..141]) = this card's built-in skills + the trained ones, rebuilt rather than OR-ed in:
+// bits of replaced trained skills and of other versions of the player otherwise pile up (a 34-skill list leaves
+// the player-info skill page empty). 142/143 are booster slots in the save layout; the iOS wire derives the
+// Showtime bits from additional_skill_id. Without the card's data the built-in bits are left as they are.
+void ziruSetSkillBits(const ArrP& params, int64_t cardId, const std::vector<int32_t>& trained) {
+  if (!params || params->length() < 142) return;
+  ObjP card = ziruExactCard(cardId);
+  ArrP cp = card ? card->optJSONArray("parameters") : nullptr;
+  if (cp && cp->length() >= 142)
+    for (int idx = 70; idx <= 141; ++idx) params->put(idx, cp->optInt(idx, 0) == 1 ? 1 : 0);
+  for (int v : trained)
+    if (isZiruSkillId(v) && kZiruSkillParameters[v] <= 141) params->put(kZiruSkillParameters[v], 1);
+}
+
 ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
   if (!jo) return jo;
   try {
@@ -234,12 +248,6 @@ ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
           ArrP curParams = cur->optJSONArray("parameters");
           if (baseParams && curParams) {
             while (curParams->length() < 145) curParams->put(0);
-            for (int idx = 70; idx <= 141; ++idx) {
-              int baseSkill = baseParams->optInt(idx, 0);
-              if (baseSkill != 0) {
-                curParams->put(idx, baseSkill);
-              }
-            }
             for (int b = 0; b < 3; ++b) {
               int bVal = curIb->optInt(b, 0);
               if (bVal > 0 && curParams->optInt(142 + b, 0) == 0) curParams->put(142 + b, bVal);
@@ -255,12 +263,6 @@ ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
           ArrP origParams = cur->optJSONArray("original_parameters");
           if (baseParams && origParams) {
             while (origParams->length() < 145) origParams->put(0);
-            for (int idx = 70; idx <= 141; ++idx) {
-              int baseSkill = baseParams->optInt(idx, 0);
-              if (baseSkill != 0) {
-                origParams->put(idx, baseSkill);
-              }
-            }
             for (int b = 0; b < 3; ++b) {
               int bVal = curIb->optInt(b, 0);
               if (bVal > 0 && origParams->optInt(142 + b, 0) == 0) origParams->put(142 + b, bVal);
@@ -321,16 +323,12 @@ ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
         for (int v : al) ja->put(v);
         cur->put("additional_skill_id", ja);
         ArrP params = cur->optJSONArray("parameters");
-        if (params && params->length() >= 70) {
-          for (int v : al) {
-            if (isZiruSkillId(v)) {
-              int pIdx = kZiruSkillParameters[v];
-              if (pIdx >= 0 && pIdx < params->length()) params->put(pIdx, 1);
-            }
-          }
+        ziruSetSkillBits(params, id, al);
+        if (ArrP orig = cur->optJSONArray("original_parameters")) ziruSetSkillBits(orig, id, {});
+        else if (params) {
+          ObjP card = ziruExactCard(id);
+          cur->put("original_parameters", ziruOriginalParameters(params, ja, card ? card->optJSONArray("parameters") : nullptr));
         }
-        if (params && !cur->optJSONArray("original_parameters"))
-          cur->put("original_parameters", ziruOriginalParameters(params, ja, base ? base->optJSONArray("parameters") : nullptr));
         z27ApplyAppearanceAndClub(cur);
         applyZiruRonaldoMaxProgression(cur);
         applyZiruWeakFootFix(cur);

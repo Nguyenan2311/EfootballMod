@@ -546,9 +546,6 @@ void z27Restore(const ObjP& jo) {
             ArrP svParams = sv->optJSONArray("parameters");
             if (baseParams && svParams && baseParams->length() >= 142) {
               while (svParams->length() < 145) svParams->put(0);
-              for (int idx = 70; idx <= 141; idx++) {
-                if (baseParams->optInt(idx, 0) == 1) svParams->put(idx, 1);
-              }
             }
             // Restore authentic booster if missing
             ObjP baseGp = (w && w->optJSONObject("gameplayer")) ? w->getJSONObject("gameplayer") : nullptr;
@@ -612,16 +609,7 @@ void z27Restore(const ObjP& jo) {
             if (!skillList.empty()) {
               statePrefs.edit().putString(prefKey, joinInts(skillList)).commit();
             }
-            if (svParams && svParams->length() >= 142) {
-              for (int v : skillList) {
-                if (isZiruSkillId(v)) {
-                  int pIdx = kZiruSkillParameters[v];
-                  if (pIdx >= 0 && pIdx < svParams->length()) {
-                    svParams->put(pIdx, 1);
-                  }
-                }
-              }
-            }
+            ziruSetSkillBits(svParams, svPid, skillList);
 
             ArrP svPs = sv->optJSONArray("play_style");
             if (!svPs || svPs->length() == 0 || svPs->optInt(0, 0) <= 0) {
@@ -659,15 +647,7 @@ void z27Restore(const ObjP& jo) {
           if (!skillList.empty()) {
             statePrefs.edit().putString(prefKey, joinInts(skillList)).commit();
           }
-          ArrP pParams = p->optJSONArray("parameters");
-          if (pParams && pParams->length() >= 142) {
-            for (int v : skillList) {
-              if (isZiruSkillId(v)) {
-                int pIdx = kZiruSkillParameters[v];
-                if (pIdx >= 0 && pIdx < pParams->length()) pParams->put(pIdx, 1);
-              }
-            }
-          }
+          ziruSetSkillBits(p->optJSONArray("parameters"), pPid, skillList);
           ArrP pPs = p->optJSONArray("play_style");
           if (!pPs || pPs->length() == 0 || pPs->optInt(0, 0) <= 0) {
             p->put("play_style", z27ResolvePlayStyle(p->getJSONObject("gameplayer_id")->getLong("id"), p));
@@ -943,25 +923,6 @@ ObjP z27Player(const ObjP& gid) {
   applyZiruWeakFootFix(p);
   p = ziruSyncActiveBooster(p);
 
-  // Always restore base skills from template catalog and original_parameters
-  ObjP w = getZiruPlayerWrapper(Value((long long)pid), false);
-  if (!w) w = getZiruPlayerWrapperByBaseId(bid);
-  ArrP baseParams = (w && w->optJSONObject("gameplayer")) ? w->getJSONObject("gameplayer")->optJSONArray("parameters") : nullptr;
-  ArrP origParams = p->optJSONArray("original_parameters");
-  ArrP params = p->optJSONArray("parameters");
-  if (params && params->length() >= 142) {
-    if (baseParams && baseParams->length() >= 142) {
-      for (int idx = 70; idx <= 141; idx++) {
-        if (baseParams->optInt(idx, 0) == 1) params->put(idx, 1);
-      }
-    }
-    if (origParams && origParams->length() >= 142) {
-      for (int idx = 70; idx <= 141; idx++) {
-        if (origParams->optInt(idx, 0) == 1) params->put(idx, 1);
-      }
-    }
-  }
-
   std::vector<int32_t> al;
   if (serial > 0) {
     std::string s = sp("almanac_state").getString("ziru_skills_" + str(serial), "");
@@ -987,14 +948,7 @@ ObjP z27Player(const ObjP& gid) {
   ArrP ja = newArr();
   for (int v : al) ja->put(v);
   p->put("additional_skill_id", ja);
-  if (params && params->length() >= 70) {
-    for (int v : al) {
-      if (isZiruSkillId(v)) {
-        int pIdx = kZiruSkillParameters[v];
-        if (pIdx >= 0 && pIdx < params->length()) params->put(pIdx, 1);
-      }
-    }
-  }
+  ziruSetSkillBits(p->optJSONArray("parameters"), pid, al);
   return p;
 }
 
@@ -1037,7 +991,7 @@ ObjP z27Home(const ObjP& active) {
         int v = sk->optInt(sIdx);
         if (isZiruSkillId(v)) {
           int pIdx = kZiruSkillParameters[v];
-          if (pIdx >= 0 && pIdx < params->length()) params->put(pIdx, 1);
+          if (pIdx <= 141) params->put(pIdx, 1);
         }
       }
     }
@@ -1049,7 +1003,7 @@ ObjP z27Home(const ObjP& active) {
       }
       for (int s = 0; s < 74; ++s) {
         int pIdx = kZiruSkillParameters[s];
-        if (pIdx >= 0 && pIdx < params->length() && params->optInt(pIdx, 0) == 1) {
+        if (pIdx <= 141 && params->optInt(pIdx, 0) == 1) {
           if (addSkillSet.find(s) == addSkillSet.end()) {
             baseSkills->put(s);
           }
@@ -1191,7 +1145,7 @@ ObjP z27AwaySquad(const ObjP& active) {
         }
         for (int s = 0; s < 74; ++s) {
           int pIdx = kZiruSkillParameters[s];
-          if (pIdx >= 0 && pIdx < params->length() && params->optInt(pIdx, 0) == 1) {
+          if (pIdx <= 141 && params->optInt(pIdx, 0) == 1) {
             if (addSkillSet.find(s) == addSkillSet.end()) {
               baseSkills->put(s);
             }

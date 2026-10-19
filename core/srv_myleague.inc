@@ -43,11 +43,10 @@ Response handleZiruGetMyclubPlayerData(const std::optional<Bytes>& b) {
             if (l1 < 145 || l2 < 145) throw IllegalState("Incomplete player booster parameters");
             for (int k = 0; k < 3; k++) params->put(a + k, saved->optInt(c + k));
           }
-          for (int idx = 70; idx <= 141; ++idx) {
-            int sv = saved->optInt(idx, 0);
-            if (sv != 0 && params->optInt(idx, 0) == 0) params->put(idx, sv);
-          }
         }
+        std::vector<int32_t> trained;
+        for (int i = 0; addSkills && i < addSkills->length(); i++) trained.push_back(addSkills->optInt(i, -1));
+        ziruSetSkillBits(params, j, trained);
         ObjP li = gp->optJSONObject("level_info");
         int lim = li ? li->optInt("level_limit", 1) : 1;
         ArrP career = Array::parse(
@@ -61,9 +60,8 @@ Response handleZiruGetMyclubPlayerData(const std::optional<Bytes>& b) {
         ArrP cards = newArr();
         for (int i = 0; i < 74; i++) {
           int pIdx = kZiruSkillParameters[i];
-          if (pIdx < params->length() && params->optInt(pIdx, 0) == 1) {
-            cards->put(i);
-          }
+          // 142/143 hold boosters in the save layout: Showtime skills count only when trained
+          if (pIdx <= 141 ? params->optInt(pIdx, 0) == 1 : vcontains(trained, i)) cards->put(i);
         }
         ObjP boost = Object::parse("{\"use_item_num_list_random\":[0,1],\"use_item_num_list_select\":[0,100]}");
         ObjP out = newObj();
@@ -77,7 +75,7 @@ Response handleZiruGetMyclubPlayerData(const std::optional<Bytes>& b) {
         if (addSkills) out->put("additional_skill_id", addSkills);
         {  // diagnostics for the player-info skill page (internal skill ids)
           std::string builtIn;
-          for (int s = 0; s < 74; s++) if (orig->optInt(kZiruSkillParameters[s], 0) == 1) builtIn += str(s) + ",";
+          for (int s = 0; s < 74; s++) if (kZiruSkillParameters[s] <= 141 && orig->optInt(kZiruSkillParameters[s], 0) == 1) builtIn += str(s) + ",";
           logRequest("ZIRU_V11_PLAYERDATA", "[ZIRU_PD_SKILLS] serial=" + str(j2) + " catalog=" + (w ? "yes" : "no") +
                      " saved=" + (owned ? "yes" : "no") + " params_len=" + str(params->length()) + " builtin=" + builtIn +
                      " cards=" + cards->toString() + " additional=" + (addSkills ? addSkills->toString() : std::string("none")));
