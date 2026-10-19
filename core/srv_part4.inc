@@ -42,6 +42,7 @@ Response handleZiruMyLeagueResultV71() {
           ziruMlRecordRealMatchEventsV85(req);
           ziruMyLeagueCommitStateV74(res, h, w, userHome);
           ziruMlSimulateCurrentFixtureV83(h, w);
+          uclAdvance(ziruLeagueLoadInt("ziru_myleague_fixture", 1));
           if (res == "WIN") {
             int p = ziruLeagueLoadInt("ziru_myleague_point", 9760);
             int rw = ziruMyLeagueRewardForCpuLevelV72();
@@ -531,8 +532,7 @@ ObjP loadZiruJsonAssetObject(const std::string& name) {
 }
 
 ObjP loadZiruMyLeagueScheduleV79() {
-  int c = ziruLeagueLoadInt("ziru_myleague_compe_unit_id", 113);
-  return loadZiruJsonAssetObject("responses/ZIRU_ML_SCHEDULE_" + str(c) + ".json");
+  return uclSchedule();  // MyLeague is a Champions League season (srv_ucl.inc)
 }
 
 void logAlmanacAgentRequestBody(Request& r) {
@@ -848,7 +848,7 @@ void patchZiruMyLeaguePostMatchSeasonV82(const ObjP& jo) {
 void patchZiruMyLeagueRankingV79(const ObjP& jo) {
   if (!jo) return;
   try {
-    ArrP teams = ziruMyLeagueCompetitionTeamsV80(ziruLeagueLoadInt("ziru_myleague_compe_unit_id", 113));
+    ArrP teams = uclTableTeams();  // the user's group
     if (teams) {
       int user = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
       ArrP rows = newArr();

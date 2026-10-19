@@ -171,7 +171,10 @@ Response handleZiruMyLeagueEnterV71() {
         ziruLeagueSaveInt("ziru_myleague_last_added_point", 0);
         ziruMlResetTableV83();
         ziruMlResetPlayerStatsV85();
+        uclStartSeason(team);
         zs::logi("OFFLINE_SERVER", "[ZIRU_V81_1_TEAM_SELECTED] team=" + str(team) + " compe=" + str(compe));
+      } else if (uclEnded()) {
+        uclStartSeason(ziruLeagueLoadInt("ziru_myleague_team_id", 100));  // next season, same club
       }
     }
     if (!loadMeta("ziru_myleague_fixture")) ziruLeagueSaveInt("ziru_myleague_fixture", 1);
@@ -271,6 +274,11 @@ Response handleZiruMyLeagueInfoV71() {
   patchZiruMyLeagueLeaderboardsV85(jo);
   try {
     nn(jo)->put("team_id", ziruLeagueLoadInt("ziru_myleague_team_id", 100));
+    if (uclEnded()) {  // eliminated or final played: the client closes the season
+      bool first = !loadMeta("ziru_ucl_end_seen") || loadMeta("ziru_ucl_end_seen")->empty();
+      jo->put("is_end_season", "YES")->put("is_end_season_first_access", first ? "YES" : "NO");
+      ziruDb->saveMeta("ziru_ucl_end_seen", "1");
+    }
     patchZiruMyLeagueAddedPointV83(jo);
     jo->put("expired_item_list", newArr());
     ObjP sch = nn(nn(loadZiruMyLeagueScheduleV79())->optJSONArray("schedule_list"))->optJSONObject(f - 1);

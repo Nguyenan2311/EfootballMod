@@ -7,6 +7,8 @@
 #include <dirent.h>
 
 #include <algorithm>
+#include <array>
+#include <random>
 #include <cstring>
 #include <functional>
 #include <cstdint>
@@ -164,6 +166,7 @@ class OfflineServer {
 #include "srv_part4.inc"
 #include "srv_part5.inc"
 #include "srv_part6.inc"
+#include "srv_ucl.inc"
 #include "srv_z27.inc"
 #include "srv_serve.inc"
 };

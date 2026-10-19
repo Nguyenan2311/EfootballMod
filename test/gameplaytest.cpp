@@ -168,7 +168,10 @@ int main() {
       check(retry->getJSONObject("squad_data_home")->getJSONObject("coach")->getJSONObject("coach_id")->getInt("serial") == 2222, "owned coach serial preserved");
       check(coachId(call(s, "CMD_START_GAME", newObj()->put("game_id", (long long)id))) == 200, "idempotent start");
       s.ziruLastRequestBody = zc::encodeRequest(Value(newObj()->put("rqid", 42)));
-      Value ml; check(zc::decodeResponse(s.handleZiruMyLeagueStartGameV71().body, ml) && coachId(ml.o) == 200, "MyLeague default uses owned coach");
+      Value ml; check(zc::decodeResponse(s.handleZiruMyLeagueStartGameV71().body, ml), "MyLeague start");
+      auto userSide = ml.o->getJSONObject("squad_data_home")->optInt("team_id") == s.ziruLeagueLoadInt("ziru_myleague_team_id", 100)
+                          ? "squad_data_home" : "squad_data_away";
+      check(ml.o->getJSONObject(userSide)->getJSONObject("coach")->getJSONObject("coach_id")->getInt("id") == 200, "MyLeague default uses owned coach");
       auto special = newObj()->put("squad_data", newObj()->put("coach", newArr()->put(coachRef(100, 3333))));
       s.hydrateZiruMyLeagueCoachV73(special);
       check(special->getJSONObject("squad_data")->getJSONArray("coach")->getJSONObject(0)->getJSONObject("coach_id")->getInt("serial") == 3333, "MyLeague serial preserved");
