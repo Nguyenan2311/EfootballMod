@@ -208,14 +208,7 @@ Response handleZiruMyLeagueStartGameV71() {
               }
               pObj->put("play_style", ps);
               ArrP params = pObj->getJSONArray("parameters");
-              if (params && params->length() >= 70 && ps && ps->length() > 0) {
-                int st1 = ps->optInt(0, 0);
-                int pos = params->optInt(0, 0);
-                int st2 = ps->length() > 1 ? ps->optInt(1, 0) : z27GetDefensiveStyle(pos, st1);
-                params->put(61, st1);
-                params->put(62, st2);
-                z27ApplyComPlayStyles(params, pos, st1);
-              }
+              if (params && params->length() >= 70 && ps && ps->optInt(0, 0) > 0) params->put(61, ps->optInt(0, 0));
               out->put(pObj);
             }
           }

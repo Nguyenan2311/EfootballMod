@@ -1,68 +1,5 @@
 // ---- part 5 (OfflineServer.java ~2805-3322) ----
 
-inline void z27ApplyComPlayStyles(const ArrP& p, int pos, int st1) {
-  if (!p || p->length() < 70) return;
-  // CF (13) / SS (12)
-  if (pos == 13 || pos == 12) {
-    p->put(65, 1); // Speeding Bullet
-    p->put(66, 1); // Incisive Run
-    p->put(69, 1); // Long Ranger
-    if (st1 == 1 || st1 == 6 || st1 == 10 || st1 == 5) p->put(64, 1); // Mazing Run
-    if (st1 == 5 || st1 == 9) p->put(63, 1); // Trickster
-  }
-  // Wingers: LWG (10) / RWG (11)
-  else if (pos == 10 || pos == 11) {
-    p->put(63, 1); // Trickster
-    p->put(64, 1); // Mazing Run
-    p->put(65, 1); // Speeding Bullet
-    p->put(66, 1); // Incisive Run
-    p->put(68, 1); // Early Cross
-    if (st1 == 6 || st1 == 7) p->put(69, 1); // Long Ranger
-  }
-  // AMF (9)
-  else if (pos == 9) {
-    p->put(63, 1); // Trickster
-    p->put(64, 1); // Mazing Run
-    p->put(67, 1); // Long Ball Expert
-    p->put(69, 1); // Long Ranger
-    if (st1 == 10) p->put(66, 1); // Hole Player -> Incisive Run
-  }
-  // LMF (7) / RMF (8)
-  else if (pos == 7 || pos == 8) {
-    p->put(64, 1); // Mazing Run
-    p->put(65, 1); // Speeding Bullet
-    p->put(67, 1); // Long Ball Expert
-    p->put(68, 1); // Early Cross
-    if (st1 == 8) p->put(68, 1); // Cross Specialist
-  }
-  // DMF (5) / CMF (6)
-  else if (pos == 5 || pos == 6) {
-    p->put(67, 1); // Long Ball Expert
-    p->put(69, 1); // Long Ranger
-    if (st1 == 11) { // Box-to-Box
-      p->put(65, 1); // Speeding Bullet
-      p->put(66, 1); // Incisive Run
-    } else if (st1 == 14) { // Orchestrator
-      p->put(63, 1); // Trickster
-    }
-  }
-  // LB (3) / RB (4)
-  else if (pos == 3 || pos == 4) {
-    p->put(65, 1); // Speeding Bullet
-    p->put(68, 1); // Early Cross
-    if (st1 == 17 || st1 == 18) { // Offensive Fullback / Fullback Finisher
-      p->put(66, 1); // Incisive Run
-      p->put(64, 1); // Mazing Run
-    }
-  }
-  // CB (2)
-  else if (pos == 2) {
-    if (st1 == 15 || st1 == 16) { // Build Up / Extra Frontman
-      p->put(67, 1); // Long Ball Expert
-    }
-  }
-}
-
 void z27ApplyAppearanceAndClub(const ObjP& cur) {
   if (!cur) return;
   ObjP gid = cur->optJSONObject("gameplayer_id");
@@ -130,29 +67,16 @@ void z27ApplyAppearanceAndClub(const ObjP& cur) {
     if (base_id != 133543 && base_id != 133580 && base_id != 40352 && params->optInt(49, 0) <= 0) params->put(49, 3);
   }
 
-  // 3. Synchronize parameters[61] (Offensive PlayStyle), parameters[62] (Defensive PlayStyle), and COM styles 63..69
+  // 3. Synchronize parameters[61] (playing style); 62..69 stay as in the card data
   ArrP ps = cur->optJSONArray("play_style");
   if (ps && ps->length() > 0) {
     int st1 = ps->optInt(0, 0);
-    int pos = params ? params->optInt(0, 0) : 0;
-    int st2 = ps->length() > 1 ? ps->optInt(1, 0) : 0;
-    if (st2 <= 0) {
-      st2 = z27GetDefensiveStyle(pos, st1);
-      if (ps->length() > 1) ps->put(1, st2);
-      else ps->put(st2);
-    }
-    if (params && params->length() >= 70) {
-      if (st1 > 0) params->put(61, st1);
-      params->put(62, st2);
-      z27ApplyComPlayStyles(params, pos, st1);
-    }
+    if (params && params->length() >= 70 && st1 > 0) params->put(61, st1);
     ArrP origParams = cur->optJSONArray("original_parameters");
     restoreAppearance(origParams);
     if (origParams && origParams->length() >= 70) {
       if (base_id != 133543 && origParams->optInt(49, 0) <= 0) origParams->put(49, 3);
       if (st1 > 0) origParams->put(61, st1);
-      origParams->put(62, st2);
-      z27ApplyComPlayStyles(origParams, origParams->optInt(0, 0), st1);
     }
   }
 }
@@ -283,6 +207,10 @@ ObjP refreshZiruGameplayerFromCanonical(const ObjP& jo) {
           if (ps && ps->length() > 0 && ps->optInt(0, 0) > 0) cur->put("play_style", ps);
           ArrP baseParams = base->optJSONArray("parameters");
           ArrP curParams = cur->optJSONArray("parameters");
+          // Defensive (62) and AI (63..69) playing styles exactly as in the card data; older saves have invented ones
+          for (ArrP a : {curParams, cur->optJSONArray("original_parameters")})
+            if (baseParams && a && baseParams->length() >= 70 && a->length() >= 70)
+              for (int idx = 62; idx <= 69; ++idx) a->put(idx, baseParams->optInt(idx, 0));
           if (baseParams && curParams) {
             while (curParams->length() < 145) curParams->put(0);
             for (int idx = 70; idx <= 141; ++idx) {
