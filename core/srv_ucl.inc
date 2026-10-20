@@ -330,35 +330,70 @@ void uclSetMode(const std::string& mode) {
 
 // ---- Champions League screen (opened from the dylib's UCL button) ----
 
-std::string uclTeamName(int32_t id, const ObjP& real, const ObjP& native) {
+static std::string uclTeamName(int32_t id, const ObjP& real, const ObjP& native) {
   ArrP r = real ? real->optJSONArray(str(id)) : nullptr;
   if (r) return r->getString(0);
   return native->optString(str(id), "Team " + str(id));
 }
 
-ObjP uclPageData() {
-  ObjP real = loadZiruJsonAssetObject("responses/ZIRU_REAL_TEAM_NAMES.json"), native = newObj();
-  ObjP reg = loadZiruJsonAssetObject("responses/ZIRU_ML_COMPETITION_REGISTRY.json");
+// Club names of the game's own data (MyLeague registry), for clubs without a real name
+ObjP uclNativeNames() {
+  ObjP native = newObj(), reg = loadZiruJsonAssetObject("responses/ZIRU_ML_COMPETITION_REGISTRY.json");
   ObjP comps = reg ? reg->optJSONObject("competitions") : nullptr;
   for (const auto& c : comps ? comps->keys() : std::vector<std::string>()) {
     ArrP ts = comps->getJSONObject(c)->optJSONArray("teams");
     for (int i = 0; ts && i < ts->length(); i++) native->put(str(ts->getJSONObject(i)->getInt("team_id")), ts->getJSONObject(i)->getString("name"));
   }
+  return native;
+}
+
+// The user's fixtures played; every other match of those fixtures was simulated with them
+int uclPlayed() {
+  int played = 0;
+  for (JStr r; played < 13 && (r = loadMeta(ziruMyLeagueFixtureKeyV74(played + 1, "result"))) && !r->empty();) played++;
+  return played;
+}
+
+struct UclRow { int32_t id; int p, w, d, l, gf, ga, pts; };
+
+// A group's table after the matchdays played (all of them once the season has ended)
+std::vector<UclRow> uclGroupTable(const ArrP& teams, int played, bool ended) {
+  std::map<int32_t, UclRow> t;
+  for (int i = 0; i < 4; i++) t[teams->getInt(i)] = {teams->getInt(i), 0, 0, 0, 0, 0, 0, 0};
+  for (int md = 0; md < 6 && (ended || md < played); md++) {
+    ArrP ms = uclGroupMatchday(teams, md);
+    for (int i = 0; i < ms->length(); i++) {
+      int32_t h = ms->getJSONArray(i)->getInt(0), a = ms->getJSONArray(i)->getInt(1);
+      int hs, as;
+      uclScore(md + 1, h, a, hs, as);
+      for (auto [id, gf, ga] : {std::tuple<int32_t, int, int>{h, hs, as}, std::tuple<int32_t, int, int>{a, as, hs}}) {
+        UclRow& r = t[id];
+        r.p++; r.gf += gf; r.ga += ga;
+        if (gf > ga) { r.w++; r.pts += 3; } else if (gf == ga) { r.d++; r.pts++; } else r.l++;
+      }
+    }
+  }
+  std::vector<UclRow> rows;
+  for (auto& [id, r] : t) rows.push_back(r);
+  auto key = [](const UclRow& r) { return std::make_tuple(r.pts, r.gf - r.ga, r.gf, -r.id); };
+  std::sort(rows.begin(), rows.end(), [&](const UclRow& x, const UclRow& y) { return key(x) > key(y); });
+  return rows;
+}
+
+ObjP uclPageData() {
+  ObjP real = loadZiruJsonAssetObject("responses/ZIRU_REAL_TEAM_NAMES.json"), native = uclNativeNames();
   int32_t user = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
   ObjP out = newObj()->put("mode", uclMode() ? "UCL" : "LEAGUE")->put("user_name", uclTeamName(user, real, native));
   ObjP st = uclMode() ? uclState() : nullptr;
   if (st) {
     bool ended = !st->optString("ended", "").empty();
-    int played = 0;  // the user's fixtures played; every other match of those fixtures was simulated with them
-    for (JStr r; played < 13 && (r = loadMeta(ziruMyLeagueFixtureKeyV74(played + 1, "result"))) && !r->empty();) played++;
+    int played = uclPlayed();
     auto isPlayed = [&](int32_t f) { return ended || f <= played; };
     out->put("ended", st->optString("ended", ""))->put("played", played);
     if (st->has("champion")) out->put("champion", uclTeamName(st->getInt("champion"), real, native));
     ArrP groups = newArr(), sg = st->getJSONArray("groups");
     for (int g = 0; g < 8; g++) {
       ArrP teams = sg->getJSONArray(g), matches = newArr();
-      std::map<int32_t, std::array<int, 7>> t;  // p w d l gf ga pts
-      for (int i = 0; i < 4; i++) t[teams->getInt(i)] = {0, 0, 0, 0, 0, 0, 0};
       for (int md = 0; md < 6; md++) {
         ArrP ms = uclGroupMatchday(teams, md);
         for (int i = 0; i < ms->length(); i++) {
@@ -368,25 +403,14 @@ ObjP uclPageData() {
             int hs, as;
             uclScore(md + 1, h, a, hs, as);
             m->put("hs", hs)->put("as", as);
-            for (auto [id, gf, ga] : {std::tuple<int32_t, int, int>{h, hs, as}, std::tuple<int32_t, int, int>{a, as, hs}}) {
-              auto& r = t[id];
-              r[0]++; r[4] += gf; r[5] += ga;
-              if (gf > ga) { r[1]++; r[6] += 3; } else if (gf == ga) { r[2]++; r[6]++; } else r[3]++;
-            }
           }
           matches->put(m);
         }
       }
-      std::vector<int32_t> order;
-      for (auto& [id, r] : t) order.push_back(id);
-      auto key = [&](int32_t id) { auto& r = t[id]; return std::make_tuple(r[6], r[4] - r[5], r[4], -id); };
-      std::sort(order.begin(), order.end(), [&](int32_t x, int32_t y) { return key(x) > key(y); });
       ArrP table = newArr();
-      for (int32_t id : order) {
-        auto& r = t[id];
-        table->put(newObj()->put("team", uclTeamName(id, real, native))->put("user", id == user ? 1 : 0)->put("p", r[0])->put("w", r[1])
-                       ->put("d", r[2])->put("l", r[3])->put("gf", r[4])->put("ga", r[5])->put("pts", r[6]));
-      }
+      for (const UclRow& r : uclGroupTable(teams, played, ended))
+        table->put(newObj()->put("team", uclTeamName(r.id, real, native))->put("user", r.id == user ? 1 : 0)->put("p", r.p)->put("w", r.w)
+                       ->put("d", r.d)->put("l", r.l)->put("gf", r.gf)->put("ga", r.ga)->put("pts", r.pts));
       groups->put(newObj()->put("name", std::string(1, (char)('A' + g)))->put("table", table)->put("matches", matches));
     }
     out->put("groups", groups);
@@ -443,79 +467,198 @@ std::string uclPageHtml() {
   return page;
 }
 
-// ---- Probe: the game's own event-competition screens (group stage draw, knockout match list) ----
-// Field names come from the client's JSON readers (CmdEnterEventCompe, CmdGetEventCompeGroupStageDraw,
-// CmdGetEventCompeTournamentMatchList, CmdGetEventCompeInfo); nesting and types are guesses to be checked on device.
-// Test events 91001.. differ only in major_category, to find which category opens these screens.
 
-static constexpr const char* kUclProbeCategories[] = {"RECORD", "RANKING", "CHALLENGE", "PT", "COOP"};
+// ---- The season in the game's own tournament screens (User Compe: group tables, bracket) ----
+// The 32 clubs appear as the competition's 32 entrants; the user's club carries the user's own id, the
+// others a made-up id per club.  Schemas come from the client's commandautomake readers; matches are still
+// played through MyLeague, these commands only show the competition.
 
-void uclProbeEvents(const ObjP& jo) {
-  ArrP list = jo->optJSONArray("event_list");
-  if (!list || list->length() == 0) return;
-  for (int i = 0; i < 5; i++) {
-    ObjP e = Object::parse(list->getJSONObject(0)->toString());
-    std::string cat = kUclProbeCategories[i];
-    e->put("event_id", 91001 + i)->put("major_category", cat)->put("compe_unit_id", 91001 + i)
-        ->put("event_name", "UCL thử - " + cat)->put("event_list_disp_name", "UCL thử - " + cat)
-        ->put("description_text", "Sự kiện thử nghiệm giao diện vòng bảng / loại trực tiếp (" + cat + ").");
-    ObjP env = e->optJSONObject("match_env");
-    if (env) env->put("exTime", "YES")->put("pk", "YES");
-    list->put(e);
+static constexpr int64_t kUclCompeId = 27001;
+static constexpr const char* kUclRoundNames[] = {"BEST_16", "QUARTER_FINALS", "SEMI_FINAL", "FINAL"};
+
+struct UclCompeCtx {
+  ObjP st, real, native;
+  int32_t team, me;  // the user's club, the user's own id
+  int played;
+  bool ended;
+  int32_t uid(int32_t id) const { return id == team ? me : 1800000000 + id; }
+  std::string name(int32_t id) const { return uclTeamName(id, real, native); }
+  std::string shortName(int32_t id) const {
+    ArrP r = real ? real->optJSONArray(str(id)) : nullptr;
+    return r && r->length() > 1 ? r->getString(1) : name(id).substr(0, 3);
   }
-  jo->put("event_num", list->length());
+  bool isPlayed(int32_t f) const { return ended || f <= played; }
+};
+
+ObjP uclCompeUser(int32_t uid, const std::string& name) {
+  return newObj()->put("user_id", uid)->put("user_name", name)->put("is_deleted", "NO")->put("platform", "IOS")
+      ->put("avatar", newObj()->put("is_already_set", "NO"))->put("user_banner", newObj()->put("is_valid", "NO"));
 }
 
-ObjP uclProbeCompeInfo(int64_t eventId) {
-  ObjP st = uclEnsure();
-  int32_t user = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
-  ArrP ranking = newArr(), groups = st->getJSONArray("groups");
+ObjP uclCompeSettings(const UclCompeCtx& c) {
+  ObjP ev = loadZiruJsonAssetObject("responses/ZIRU_EVENT_LIST.json");
+  ObjP e = ev && ev->optJSONArray("event_list") ? ev->getJSONArray("event_list")->optJSONObject(0) : nullptr;
+  ObjP env = e && e->optJSONObject("match_env") ? e->getJSONObject("match_env") : newObj();
+  env->put("match_time", 10)->put("pk", "YES");
+  return newObj()->put("owner_user_info", uclCompeUser(c.me, c.name(c.team)))->put("user_compe_name", "UEFA Champions League")
+      ->put("is_owner_only_observe", "NO")
+      ->put("regulations", newObj()->put("compe_format", "LEAGUE_AND_KNOCKOUT")->put("group_num", 8)->put("group_team_num", 4)
+                               ->put("knockout_team_num", 16)->put("is_exist_third_prize_match", "NO")
+                               ->put("candidate_max", 32)->put("candidate_min", 32))
+      ->put("bg_file_name", "")->put("prematch_time_limit_num", 0)->put("is_set_match_date_and_time", "NO")
+      ->put("match_date_and_time", newObj()->put("group_time", newArr())->put("round_time", newArr())->put("third_prize_match_time", 0))
+      ->put("is_authentic", "NO")->put("is_auto_progress", "YES")
+      ->put("emblem_info", newObj()->put("compe_id", 0)->put("original_emblem_id", 0)->put("special_emblem_name", ""))
+      ->put("has_password", "NO")->put("password", "")
+      ->put("entry_limit", newObj()->put("limit_type", "NO_LIMIT")->put("limit_category", "LIMIT_CLUB")->put("is_league_multi_team", "NO")
+                               ->put("entity_id", 0)->put("limit_id", 0)->put("team_power_limit_upper", 0)
+                               ->put("team_power_limit_lower", 0)->put("player_num", 0))
+      ->put("match_env", env)
+      ->put("stadium_setting", e && e->optJSONObject("stadium_setting") ? e->getJSONObject("stadium_setting") : newObj())
+      ->put("is_used_owners_stadium", "NO")->put("is_sound_stream", "NO");
+}
+
+ObjP uclCompeProgress(const UclCompeCtx& c) {
+  ArrP rounds = c.st->optJSONArray("rounds");
+  int knockout = rounds ? rounds->length() : 0;
+  std::string status = c.ended ? "FINISHED" : knockout ? "IN_PROGRESS_KNOCKOUT" : "IN_PROGRESS_LEAGUE";
+  std::string round = knockout ? kUclRoundNames[std::min(knockout, 4) - 1] : "ROUND_NONE";
+  int phase = knockout ? 1 : std::min(c.played + 1, 6);
+  return newObj()->put("status", status)->put("phase", phase)->put("round", round)->put("time_limit_for_next_match", 0);
+}
+
+// One side of a match: club, goals (and shoot-out goals)
+ObjP uclCompeSide(const UclCompeCtx& c, int32_t id, int goals, int pk, bool played) {
+  return newObj()->put("user_id", c.uid(id))->put("team_id", id)->put("team_name", c.name(id))->put("team_name_short", c.shortName(id))
+      ->put("score", newArr()->put(newObj()->put("score_1st", played ? goals : 0)->put("score_2nd", 0)->put("score_ex1st", 0)
+                                       ->put("score_ex2nd", 0)->put("score_pk", std::max(pk, 0))))
+      ->put("is_ex", "NO")->put("is_pk", pk >= 0 && played ? "YES" : "NO")->put("no_match", "NO");
+}
+
+ObjP uclCompeMatch(const UclCompeCtx& c, int32_t h, int hs, int32_t a, int as, int phase, bool played, int32_t pkWinner = 0) {
+  return newObj()->put("user_info_list", newArr()->put(uclCompeSide(c, h, hs, pkWinner ? (pkWinner == h ? 1 : 0) : -1, played))
+                                             ->put(uclCompeSide(c, a, as, pkWinner ? (pkWinner == a ? 1 : 0) : -1, played)))
+      ->put("is_match_finished", played ? "YES" : "NO")->put("phase", phase);
+}
+
+ObjP uclCompeSchedule(const UclCompeCtx& c) {
+  ArrP groupInfo = newArr(), roundInfo = newArr(), groups = c.st->getJSONArray("groups");
   for (int g = 0; g < 8; g++) {
-    std::vector<int32_t> order = uclGroupOrder(groups->getJSONArray(g));
-    for (int i = 0; i < 4; i++)
-      ranking->put(newObj()->put("index", g)->put("rank", i + 1)->put("team_id", order[i])
-                       ->put("is_my_group", g == st->getInt("user_group") ? "YES" : "NO")
-                       ->put("winning_points", 0)->put("wins", 0)->put("draws", 0)->put("losses", 0)
-                       ->put("goals", 0)->put("goals_against", 0)->put("diff", 0));
+    ArrP teams = groups->getJSONArray(g), users = newArr(), matches = newArr();
+    for (int i = 0; i < 4; i++) users->put(c.uid(teams->getInt(i)));
+    for (int md = 0; md < 6; md++) {
+      ArrP ms = uclGroupMatchday(teams, md);
+      for (int i = 0; i < ms->length(); i++) {
+        int32_t h = ms->getJSONArray(i)->getInt(0), a = ms->getJSONArray(i)->getInt(1);
+        int hs = 0, as = 0;
+        if (c.isPlayed(md + 1)) uclScore(md + 1, h, a, hs, as);
+        matches->put(uclCompeMatch(c, h, hs, a, as, md + 1, c.isPlayed(md + 1)));
+      }
+    }
+    groupInfo->put(newObj()->put("round", "ROUND_NONE")->put("group", g)->put("group_user_list", users)->put("match_result_list", matches));
   }
-  ObjP settings = newObj()->put("compe_format", "LEAGUE_AND_KNOCKOUT")->put("group_num", 8)->put("group_team_num", 4)
-                      ->put("knockout_team_num", 16)->put("is_exist_third_prize_match", "NO")
-                      ->put("candidate_max", 32)->put("candidate_min", 32);
-  ObjP core = newObj()->put("event_compe_id", (long long)eventId)
-                  ->put("detail_info", newObj()->put("is_disp_top_scorer", "YES"));
-  return newObj()->put("core_info", core)->put("settings", settings)->put("start_time", 1700000000LL)
-      ->put("end_time", 1999999999LL)->put("selected_team_id", user)
-      ->put("group_ranking_data", newObj()->put("ranking_data_list", ranking)->put("phase_result_list", newArr()));
+  ArrP rounds = c.st->optJSONArray("rounds");
+  for (int i = 0; rounds && i < rounds->length() && i < 4; i++) {  // one entry per tie: the aggregate of both legs
+    ObjP r = rounds->getJSONObject(i);
+    int32_t f1 = r->getInt("f1"), f2 = r->getInt("f2");
+    ArrP ties = r->getJSONArray("ties"), users = newArr(), matches = newArr();
+    bool done = c.isPlayed(f2 ? f2 : f1);
+    std::vector<int32_t> winners = done ? uclRoundWinners(ties, f1, f2) : std::vector<int32_t>();
+    for (int j = 0; j < ties->length(); j++) {
+      int32_t x = ties->getJSONArray(j)->getInt(0), y = ties->getJSONArray(j)->getInt(1);
+      users->put(c.uid(x))->put(c.uid(y));
+      int gx = 0, gy = 0, s1, s2;
+      if (f2 == 0) {
+        if (c.isPlayed(f1)) uclScore(f1, x, y, gx, gy);
+      } else {
+        if (c.isPlayed(f1)) { uclScore(f1, y, x, s2, s1); gx += s1; gy += s2; }
+        if (c.isPlayed(f2)) { uclScore(f2, x, y, s1, s2); gx += s1; gy += s2; }
+      }
+      int32_t pkWinner = done && gx == gy ? winners[j] : 0;
+      matches->put(uclCompeMatch(c, x, gx, y, gy, 1, done, pkWinner));
+    }
+    roundInfo->put(newObj()->put("round", kUclRoundNames[i])->put("group", 0)->put("group_user_list", users)->put("match_result_list", matches));
+  }
+  return newObj()->put("group_info", groupInfo)->put("round_info", roundInfo);
 }
 
-Response uclProbeHandle(const std::string& msgid) {
-  ObjP req = decodeZiruRequestJson(ziruLastRequestBody);
-  int64_t eventId = req ? req->optLong("event_id", req->optLong("event_compe_id", 91001)) : 91001;
-  ObjP jo = newObj()->put("result", "NOERR")->put("rqid", (long long)(req ? req->optLong("rqid", 1) : 1))->put("msgid", msgid);
-  ObjP st = uclEnsure();
-  if (msgid == "CMD_ENTER_EVENT_COMPE") {
-    jo->put("event_compe_info", uclProbeCompeInfo(eventId))->put("event_compe_log", newObj())->put("is_invalid", "NO");
-  } else if (msgid == "CMD_GET_EVENT_COMPE_INFO") {
-    jo->put("is_core_only", "NO")->put("is_need_default_member", "NO")
-        ->put("info_list", newArr()->put(uclProbeCompeInfo(eventId)))->put("log_list", newArr());
-  } else if (msgid == "CMD_GET_EVENT_COMPE_GROUP_STAGE_DRAW") {
-    ArrP teams = newArr(), groups = st->getJSONArray("groups");
-    for (int g = 0; g < 8; g++)
-      for (int i = 0; i < 4; i++)
-        teams->put(newObj()->put("group_index", g)->put("team_index", i)->put("team_id", groups->getJSONArray(g)->getInt(i)));
-    jo->put("team_data_lists", teams)
-        ->put("my_side", newObj()->put("team_id", ziruLeagueLoadInt("ziru_myleague_team_id", 100)));
-  } else {  // CMD_GET_EVENT_COMPE_TOURNAMENT_MATCH_LIST
-    ArrP list = newArr(), rounds = st->optJSONArray("rounds");
-    for (int i = 0; rounds && i < rounds->length(); i++) {
-      ArrP ties = rounds->getJSONObject(i)->getJSONArray("ties");
-      for (int j = 0; j < ties->length(); j++)
-        list->put(newObj()->put("home_team_id", ties->getJSONArray(j)->getInt(0))->put("away_team_id", ties->getJSONArray(j)->getInt(1))
-                      ->put("event_compe_id", (long long)eventId));
+ArrP uclCompeRanking(const UclCompeCtx& c) {
+  ArrP out = newArr(), groups = c.st->getJSONArray("groups");
+  for (int g = 0; g < 8; g++) {
+    ArrP list = newArr();
+    std::vector<UclRow> rows = uclGroupTable(groups->getJSONArray(g), c.played, c.ended);
+    for (size_t i = 0; i < rows.size(); i++) {
+      const UclRow& r = rows[i];
+      list->put(newObj()->put("rank", (int)i + 1)->put("is_rank_up", "NO")->put("is_rank_down", "NO")->put("user_id", c.uid(r.id))
+                    ->put("is_kicked_out_user", "NO")->put("team_id", r.id)->put("team_name", c.name(r.id))
+                    ->put("is_my_info", r.id == c.team ? "YES" : "NO")->put("match_num", r.p)->put("wins", r.w)->put("losses", r.l)
+                    ->put("draws", r.d)->put("goals", r.gf)->put("goals_against", r.ga)->put("diff", (long long)(r.gf - r.ga))
+                    ->put("winning_points", r.pts));
     }
-    jo->put("tournament_match_list", list)->put("event_compe_id", (long long)eventId)
-        ->put("compe_unit_id", (long long)eventId)->put("match_count", list->length());
+    out->put(newObj()->put("index", g)->put("is_my_group", g == c.st->getInt("user_group") ? "YES" : "NO")->put("ranking_data_list", list));
   }
-  logRequest("ZIRU_UCL_PROBE", "[ZIRU_UCL_PROBE_RES] " + jo->toString().substr(0, 1500));
+  return out;
+}
+
+ObjP uclCompeInfo(const UclCompeCtx& c) {
+  ArrP users = newArr(), teams = newArr(), groups = c.st->getJSONArray("groups");
+  for (int g = 0; g < 8; g++)
+    for (int i = 0; i < 4; i++) {
+      int32_t id = groups->getJSONArray(g)->getInt(i);
+      users->put(uclCompeUser(c.uid(id), c.name(id)));
+      teams->put(id);
+    }
+  int64_t now = zc::currentTimeMillis() / 1000;
+  ObjP core = newObj()->put("user_compe_id", (long long)kUclCompeId)->put("progress_status_info", uclCompeProgress(c))
+                  ->put("entry_status", "ENTERED")->put("user_info_list", users)->put("user_selected_team_list", teams)
+                  ->put("user_final_rank_list", newArr())->put("schedule_info", uclCompeSchedule(c))->put("match_info_list", newArr())
+                  ->put("result_uniform_id", 0)->put("result_uni_base_team_id", 0);
+  return newObj()->put("core_info", core)->put("settings", uclCompeSettings(c))->put("start_time", (long long)(now - 86400))
+      ->put("end_time", (long long)(now + 30 * 86400))->put("group_ranking_data", uclCompeRanking(c))
+      ->put("selected_team_id", c.team)->put("result_uniform_id", 0);
+}
+
+Response uclCompeHandle(const std::string& msgid) {
+  ObjP req = decodeZiruRequestJson(ziruLastRequestBody);
+  ObjP jo = newObj()->put("result", "NOERR")->put("rqid", (long long)(req ? req->optLong("rqid", 1) : 1))->put("msgid", msgid);
+  UclCompeCtx c;
+  c.st = uclMode() ? uclEnsure() : nullptr;
+  c.real = loadZiruJsonAssetObject("responses/ZIRU_REAL_TEAM_NAMES.json");
+  c.native = uclNativeNames();
+  c.team = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
+  c.me = req ? (int32_t)req->optLong("user_id", 1) : 1;
+  c.played = uclPlayed();
+  c.ended = c.st && !c.st->optString("ended", "").empty();
+  if (msgid == "CMD_GET_USER_COMPE_SERVER_PARAM") {
+    jo->put("param_info", newObj()->put("compe_duration", 30)->put("result_duration", 7)->put("prematch_time_limits", newArr()->put(0))
+                              ->put("limit_team_power_choices", newArr()->put(0))->put("team_power_default", 0)
+                              ->put("emblem_info_list", newArr()));
+  } else if (msgid == "CMD_CREATE_USER_COMPE") {
+    jo->put("user_compe_id", (long long)kUclCompeId);
+  } else if (msgid == "CMD_GET_USER_COMPE_TOTAL_RECORD") {
+    jo->put("record_list", newArr());
+  } else if (msgid == "CMD_GET_USER_COMPE_ROOM_ID") {
+    jo->put("room_id", newObj()->put("id", 0));
+  } else if (c.st && msgid == "CMD_GET_USER_COMPE_CURRENT_ENTRY_INFO") {
+    jo->put("user_compe_id", (long long)kUclCompeId)->put("progress_status_info", uclCompeProgress(c))
+        ->put("compe_settings", uclCompeSettings(c))->put("d_user_compe_id", 0)->put("last_entry_compe_id", (long long)kUclCompeId);
+  } else if (c.st && (msgid == "CMD_GET_USER_COMPE_INFO" || msgid == "CMD_CLOSE_USER_COMPE")) {
+    jo->put("user_compe_info", uclCompeInfo(c));
+  } else if (c.st && msgid == "CMD_GET_USER_COMPE_LIST") {
+    jo->put("user_compe_info_list", newArr()->put(uclCompeInfo(c)));
+  } else if (c.st && msgid == "CMD_GET_USER_COMPE_PROGRESS") {
+    jo->put("group_ranking_data", uclCompeRanking(c))->put("phase_result_list", newArr())->put("match_result", uclCompeSchedule(c));
+  } else if (c.st && msgid == "CMD_GET_USER_COMPE_USER_LIST") {
+    ArrP list = newArr(), groups = c.st->getJSONArray("groups");
+    for (int g = 0; g < 8; g++)
+      for (int i = 0; i < 4; i++) {
+        int32_t id = groups->getJSONArray(g)->getInt(i);
+        list->put(newObj()->put("user_info", uclCompeUser(c.uid(id), c.name(id)))->put("is_online", "YES")->put("user_status", "CAN_START_MATCH"));
+      }
+    jo->put("user_compe_user_list", list);
+  } else if (msgid == "CMD_GET_USER_COMPE_CURRENT_ENTRY_INFO") {  // league mode: no competition entered
+    jo->put("user_compe_id", 0)->put("d_user_compe_id", 0)->put("last_entry_compe_id", 0);
+  }
+  logRequest("ZIRU_UCL_COMPE", "[ZIRU_UCL_COMPE_RES] " + jo->toString().substr(0, 2500));
   return serveObjectAsEncryptedMsgPack(jo);
 }

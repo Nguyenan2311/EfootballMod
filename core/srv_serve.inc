@@ -277,9 +277,10 @@ Response serveInner(Request& r) {
     ObjP req = decodeZiruRequestJson(ziruLastRequestBody);
     logRequest("ZIRU_EVENT_REQ", "[ZIRU_EVENT_REQ] " + uri + " " + (req ? req->toString().substr(0, 1500) : std::string("-")));
   }
-  for (const char* c : {"CMD_ENTER_EVENT_COMPE", "CMD_GET_EVENT_COMPE_INFO", "CMD_GET_EVENT_COMPE_GROUP_STAGE_DRAW",
-                        "CMD_GET_EVENT_COMPE_TOURNAMENT_MATCH_LIST"})
-    if (isCmd(c)) return uclProbeHandle(c);
+  if (contains(uri, "USER_COMPE")) {  // the tournament screens show the Champions League season
+    size_t at = uri.find("CMD_"), dot = uri.find(".php");
+    if (at != std::string::npos && dot != std::string::npos && dot > at) return uclCompeHandle(uri.substr(at, dot - at));
+  }
   if (isCmd("CMD_SELL_MYCLUB_GAMEPLAYER")) {
     auto x = handleZiruSellPlayerEarly(r);
     if (!x) return newFixedText(500, "SERVER INTERNAL ERROR: Serve() returned a null response.");
@@ -423,7 +424,6 @@ Response serveInner(Request& r) {
       jo->put("event_log_list", newArr());
       jo->put("event_num", 0);
     }
-    uclProbeEvents(jo);
     jo->put("result", "NOERR");
     jo->put("rqid", rq);
     jo->put("msgid", "CMD_GET_EVENT_LIST_AND_LOG");
