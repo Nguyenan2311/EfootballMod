@@ -442,3 +442,80 @@ std::string uclPageHtml() {
   if (at != std::string::npos) page.replace(at, marker.size(), replaceAll(uclPageData()->toString(), "</", "<\\/"));
   return page;
 }
+
+// ---- Probe: the game's own event-competition screens (group stage draw, knockout match list) ----
+// Field names come from the client's JSON readers (CmdEnterEventCompe, CmdGetEventCompeGroupStageDraw,
+// CmdGetEventCompeTournamentMatchList, CmdGetEventCompeInfo); nesting and types are guesses to be checked on device.
+// Test events 91001.. differ only in major_category, to find which category opens these screens.
+
+static constexpr const char* kUclProbeCategories[] = {"RECORD", "RANKING", "CHALLENGE", "PT", "COOP"};
+
+void uclProbeEvents(const ObjP& jo) {
+  ArrP list = jo->optJSONArray("event_list");
+  if (!list || list->length() == 0) return;
+  for (int i = 0; i < 5; i++) {
+    ObjP e = Object::parse(list->getJSONObject(0)->toString());
+    std::string cat = kUclProbeCategories[i];
+    e->put("event_id", 91001 + i)->put("major_category", cat)->put("compe_unit_id", 91001 + i)
+        ->put("event_name", "UCL thử - " + cat)->put("event_list_disp_name", "UCL thử - " + cat)
+        ->put("description_text", "Sự kiện thử nghiệm giao diện vòng bảng / loại trực tiếp (" + cat + ").");
+    ObjP env = e->optJSONObject("match_env");
+    if (env) env->put("exTime", "YES")->put("pk", "YES");
+    list->put(e);
+  }
+  jo->put("event_num", list->length());
+}
+
+ObjP uclProbeCompeInfo(int64_t eventId) {
+  ObjP st = uclEnsure();
+  int32_t user = ziruLeagueLoadInt("ziru_myleague_team_id", 100);
+  ArrP ranking = newArr(), groups = st->getJSONArray("groups");
+  for (int g = 0; g < 8; g++) {
+    std::vector<int32_t> order = uclGroupOrder(groups->getJSONArray(g));
+    for (int i = 0; i < 4; i++)
+      ranking->put(newObj()->put("index", g)->put("rank", i + 1)->put("team_id", order[i])
+                       ->put("is_my_group", g == st->getInt("user_group") ? "YES" : "NO")
+                       ->put("winning_points", 0)->put("wins", 0)->put("draws", 0)->put("losses", 0)
+                       ->put("goals", 0)->put("goals_against", 0)->put("diff", 0));
+  }
+  ObjP settings = newObj()->put("compe_format", "LEAGUE_AND_KNOCKOUT")->put("group_num", 8)->put("group_team_num", 4)
+                      ->put("knockout_team_num", 16)->put("is_exist_third_prize_match", "NO")
+                      ->put("candidate_max", 32)->put("candidate_min", 32);
+  ObjP core = newObj()->put("event_compe_id", (long long)eventId)
+                  ->put("detail_info", newObj()->put("is_disp_top_scorer", "YES"));
+  return newObj()->put("core_info", core)->put("settings", settings)->put("start_time", 1700000000LL)
+      ->put("end_time", 1999999999LL)->put("selected_team_id", user)
+      ->put("group_ranking_data", newObj()->put("ranking_data_list", ranking)->put("phase_result_list", newArr()));
+}
+
+Response uclProbeHandle(const std::string& msgid) {
+  ObjP req = decodeZiruRequestJson(ziruLastRequestBody);
+  int64_t eventId = req ? req->optLong("event_id", req->optLong("event_compe_id", 91001)) : 91001;
+  ObjP jo = newObj()->put("result", "NOERR")->put("rqid", (long long)(req ? req->optLong("rqid", 1) : 1))->put("msgid", msgid);
+  ObjP st = uclEnsure();
+  if (msgid == "CMD_ENTER_EVENT_COMPE") {
+    jo->put("event_compe_info", uclProbeCompeInfo(eventId))->put("event_compe_log", newObj())->put("is_invalid", "NO");
+  } else if (msgid == "CMD_GET_EVENT_COMPE_INFO") {
+    jo->put("is_core_only", "NO")->put("is_need_default_member", "NO")
+        ->put("info_list", newArr()->put(uclProbeCompeInfo(eventId)))->put("log_list", newArr());
+  } else if (msgid == "CMD_GET_EVENT_COMPE_GROUP_STAGE_DRAW") {
+    ArrP teams = newArr(), groups = st->getJSONArray("groups");
+    for (int g = 0; g < 8; g++)
+      for (int i = 0; i < 4; i++)
+        teams->put(newObj()->put("group_index", g)->put("team_index", i)->put("team_id", groups->getJSONArray(g)->getInt(i)));
+    jo->put("team_data_lists", teams)
+        ->put("my_side", newObj()->put("team_id", ziruLeagueLoadInt("ziru_myleague_team_id", 100)));
+  } else {  // CMD_GET_EVENT_COMPE_TOURNAMENT_MATCH_LIST
+    ArrP list = newArr(), rounds = st->optJSONArray("rounds");
+    for (int i = 0; rounds && i < rounds->length(); i++) {
+      ArrP ties = rounds->getJSONObject(i)->getJSONArray("ties");
+      for (int j = 0; j < ties->length(); j++)
+        list->put(newObj()->put("home_team_id", ties->getJSONArray(j)->getInt(0))->put("away_team_id", ties->getJSONArray(j)->getInt(1))
+                      ->put("event_compe_id", (long long)eventId));
+    }
+    jo->put("tournament_match_list", list)->put("event_compe_id", (long long)eventId)
+        ->put("compe_unit_id", (long long)eventId)->put("match_count", list->length());
+  }
+  logRequest("ZIRU_UCL_PROBE", "[ZIRU_UCL_PROBE_RES] " + jo->toString().substr(0, 1500));
+  return serveObjectAsEncryptedMsgPack(jo);
+}
